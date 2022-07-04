@@ -1,0 +1,28 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.EParking" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary1</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary3</item>
+        <item name="colorOnPrimary">@color/colorPrimary3</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary1</item>
+        <item name="colorSecondaryVariant">@color/colorSecondary2</item>
+        <item name="colorOnSecondary">@color/colorSecondary3</item>
+        <!-- Customize your theme here. -->
+
+        <item name="android:windowBackground">?attr/colorOnPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.EParking.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EParking.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.EParking.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/LoginFragment">
+
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.mhandharbeni.e_parking.LoginFragment"
+        android:label="@string/login_fragment"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_main"
+            app:destination="@id/MainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="com.mhandharbeni.e_parking.MainFragment"
+        android:label="@string/main_screen"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_main_to_login"
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_main_to_bt"
+            app:destination="@id/BluetoothFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/BluetoothFragment"
+        android:name="com.mhandharbeni.e_parking.BluetoothFragment"
+        android:label="@string/bt_screen"
+        tools:layout="@layout/fragment_bluetooth">
+
+    </fragment>
+</navigation>

@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">SIMePKWB</string>
+    <string name="long_name">Sistem Informasi Manajemen eParkir Kota Wisata Batu</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="login_fragment">Login Screen</string>
+    <string name="main_screen">Main Screen</string>
+    <string name="bt_screen">Bluetooth Screen</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="label_connecting">CONNECTING</string>
+    <string name="device_name">Device Name</string>
+    <string name="device_address">Device Address</string>
+    <string name="id_jukir">ID Jukir</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="label_total">TOTAL TRANSAKSI HARI INI</string>
+    <string name="pendapatan">PENDAPATAN</string>
+    <string name="karcis">KARCIS</string>
+    <string name="parkir_masuk">Parkir Masuk</string>
+    <string name="parkir_keluar">Parkir Keluar</string>
+    <string name="detail_parkir">Detail Parkir</string>
+</resources>

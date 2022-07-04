@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.mhandharbeni.e_parking"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    def room_version = "2.4.2"
+    def eventbus_version = "3.3.1"
+    def autovalue_version = "1.9"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.android.material:material:1.6.1'
+
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
+    implementation 'androidx.navigation:navigation-ui:2.4.2'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
+//    implementation "androidx.room:room-paging:2.5.0-alpha02"
+//    implementation 'androidx.paging:paging-compose:1.0.0-alpha15'
+
+    implementation 'com.github.douglasjunior.AndroidBluetoothLibrary:BluetoothClassicLibrary:0.3.5'
+    implementation "org.greenrobot:eventbus:$eventbus_version"
+    implementation "org.greenrobot:eventbus-java:$eventbus_version"
+
+    compileOnly "com.google.auto.value:auto-value-annotations:$autovalue_version"
+    annotationProcessor "com.google.auto.value:auto-value:$autovalue_version"
+
+    implementation "com.github.skydoves:balloon:1.4.6"
+}
