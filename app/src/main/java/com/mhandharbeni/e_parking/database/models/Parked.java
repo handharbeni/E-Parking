@@ -4,8 +4,10 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(indices = {@Index(value = {"id"}, unique = true)})
-public class Parked {
+public class Parked implements Serializable {
     @PrimaryKey(autoGenerate = true)
     long id;
 

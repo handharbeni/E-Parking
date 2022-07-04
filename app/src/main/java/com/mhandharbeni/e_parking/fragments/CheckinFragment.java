@@ -35,14 +35,12 @@ import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckinBinding;
+import com.mhandharbeni.e_parking.utils.Constant;
 import com.priyankvasa.android.cameraviewex.CameraView;
 import com.priyankvasa.android.cameraviewex.Image;
-import com.skydoves.balloon.ArrowOrientation;
-import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
-import com.skydoves.balloon.OnBalloonDismissListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,6 +60,7 @@ public class CheckinFragment extends Fragment {
     private TextRecognizer recognizer;
     private RequestManager glideManager;
     private final Matrix matrix = new Matrix();
+    private Parked parked;
 
     @Nullable
     @Override
@@ -142,7 +141,7 @@ public class CheckinFragment extends Fragment {
                 break;
         }
 
-        Parked parked = new Parked();
+        parked = new Parked();
         parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
         parked.setTicketNumber(String.valueOf(System.currentTimeMillis()));
         parked.setImage(toBase64());
@@ -157,10 +156,7 @@ public class CheckinFragment extends Fragment {
 
         Balloon balloon = new Balloon.Builder(requireContext())
                 .setLayout(R.layout.popup_success)
-                .setArrowSize(10)
-                .setArrowOrientation(ArrowOrientation.TOP)
-                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-                .setArrowPosition(0.5f)
+                .setIsVisibleArrow(false)
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setHeight(BalloonSizeSpec.WRAP)
                 .setTextSize(15f)
@@ -170,7 +166,13 @@ public class CheckinFragment extends Fragment {
                 .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
         balloon.showAtCenter(binding.getRoot());
-        balloon.setOnBalloonDismissListener(() -> navController.navigate(R.id.action_checkin_to_main));
+        balloon.setOnBalloonDismissListener(() -> {
+            if (parked != null) {
+                Bundle args = new Bundle();
+                args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+                navController.navigate(R.id.action_checkin_to_detail, args);
+            }
+        });
     }
 
     @SuppressLint("CheckResult")

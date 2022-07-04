@@ -36,6 +36,8 @@ public class Constant {
     public static final int REQUEST_CODE_PERMISSION = 300;
     public static int REQUEST_CODE = 0;
 
+    public static String KEY_DETAIL_TIKET = "com.mhandharbeni.e_parking.fragments.DETAIL_TIKET";
+
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             LIST_PERMISSION.add(Manifest.permission.BLUETOOTH_CONNECT);
