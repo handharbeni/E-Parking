@@ -29,25 +29,26 @@
                 android:textColor="@color/white"
                 android:layout_weight="0.3"
                 android:id="@+id/edtUsername"
-                android:text="JUKIR DEV"
+                android:text="@string/label_username"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
             <com.google.android.material.textview.MaterialTextView
                 android:textColor="@color/white"
                 android:layout_weight="0.3"
                 android:id="@+id/edtDinas"
-                android:text="DISHUB BATU"
+                android:text="@string/label_dinas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
             <com.google.android.material.textview.MaterialTextView
                 android:textColor="@color/white"
                 android:layout_weight="0.3"
                 android:id="@+id/edtAddress"
-                android:text="JL ALUN ALUN"
+                android:text="@string/label_address"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profile"
             android:src="@mipmap/ic_launcher"
             android:layout_weight="0.8"
             android:layout_width="match_parent"

@@ -21,4 +21,7 @@
     <string name="parkir_masuk">Parkir Masuk</string>
     <string name="parkir_keluar">Parkir Keluar</string>
     <string name="detail_parkir">Detail Parkir</string>
+    <string name="label_username">JUKIR DEV</string>
+    <string name="label_dinas">DISHUB BATU</string>
+    <string name="label_address">JL ALUN ALUN</string>
 </resources>
