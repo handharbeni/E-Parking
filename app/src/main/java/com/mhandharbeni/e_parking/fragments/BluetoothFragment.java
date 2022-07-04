@@ -1,4 +1,4 @@
-package com.mhandharbeni.e_parking;
+package com.mhandharbeni.e_parking.fragments;
 
 import android.Manifest;
 import android.bluetooth.BluetoothDevice;

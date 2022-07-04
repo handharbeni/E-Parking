@@ -24,4 +24,16 @@
     <string name="label_username">JUKIR DEV</string>
     <string name="label_dinas">DISHUB BATU</string>
     <string name="label_address">JL ALUN ALUN</string>
+    <string name="checkin_screen">Checkin Fragment</string>
+    <string name="connect_printer">Connect Printer</string>
+    <string name="log_out">Log Out</string>
+    <string name="plat_nomor">Plat Nomor</string>
+    <string name="pilih_jenis_kendaraan">Pilih Jenis Kendaraan</string>
+    <string name="motor">MOTOR</string>
+    <string name="mobil">MOBIL</string>
+    <string name="bus_mini">BUS MINI</string>
+    <string name="bus_besar">BUS BESAR</string>
+    <string name="recorded">RECORDED</string>
+    <string name="about_simepkwb">About SIMePKWB</string>
+    <string name="todo">TODO</string>
 </resources>

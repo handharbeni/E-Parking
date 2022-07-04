@@ -12,7 +12,6 @@ import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,6 +30,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.databinding.ActivityMainBinding;
 import com.mhandharbeni.e_parking.events.MessageEvent;
+import com.mhandharbeni.e_parking.fragments.BluetoothFragment;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.Util;
 

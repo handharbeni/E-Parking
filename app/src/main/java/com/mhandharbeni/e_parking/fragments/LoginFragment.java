@@ -1,4 +1,4 @@
-package com.mhandharbeni.e_parking;
+package com.mhandharbeni.e_parking.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
@@ -17,7 +18,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
 
