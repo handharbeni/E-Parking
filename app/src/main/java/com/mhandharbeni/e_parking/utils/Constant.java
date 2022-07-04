@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class Constant {
     public static final String UUID = "00001101-0000-1000-8000-00805f9b34fb";
-    public static final String DB_NAME = "SaklarConfig";
+    public static final String DB_NAME = "EParkDB";
     public static final int DB_VERSION = 1;
     public static final boolean DB_EXPORT = false;
     public static final int RC_PERMISSION = 123;

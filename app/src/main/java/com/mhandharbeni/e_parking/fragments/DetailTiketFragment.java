@@ -114,11 +114,11 @@ public class DetailTiketFragment extends Fragment {
                     break;
             }
 
-            binding.txtDate.setText("Tanggal: "+ parked.getDate());
-            binding.txtNoTiket.setText("No. Karcis: "+parked.getTicketNumber());
-            binding.txtNoPol.setText("Nomo Polisi"+parked.getPlatNumber());
-            binding.txtType.setText("Kendaraan: "+type);
-            binding.txtPrice.setText("Tarif: "+String.valueOf(parked.getPrice()));
+            binding.txtDate.setText(String.format("Tanggal: %d", parked.getDate()));
+            binding.txtNoTiket.setText(String.format("No. Karcis: %s", parked.getTicketNumber()));
+            binding.txtNoPol.setText(String.format("Nomor Polisi: %s", parked.getPlatNumber()));
+            binding.txtType.setText(String.format("Kendaraan: %s", type));
+            binding.txtPrice.setText(String.format("Tarif: %s", String.valueOf(parked.getPrice())));
         } else {
             navController.navigate(R.id.action_detail_to_main);
         }
