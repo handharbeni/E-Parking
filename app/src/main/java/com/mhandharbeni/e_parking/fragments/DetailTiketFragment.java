@@ -115,7 +115,7 @@ public class DetailTiketFragment extends BaseFragment {
                     break;
             }
 
-            binding.txtDate.setText(String.format("Tanggal: %d", UtilDate.longToDate(parked.getDate(), "dd/MM/yyyy")));
+            binding.txtDate.setText(String.format("Tanggal: %s", UtilDate.longToDate(parked.getDate(), "dd/MM/yyyy")));
             binding.txtNoTiket.setText(String.format("No. Karcis: %s", parked.getTicketNumber()));
             binding.txtNoPol.setText(String.format("Nomor Polisi: %s", parked.getPlatNumber()));
             binding.txtType.setText(String.format("Kendaraan: %s", type));
