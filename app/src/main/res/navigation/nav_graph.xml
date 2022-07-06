@@ -101,5 +101,21 @@
             app:destination="@id/MainFragment"
             app:popUpTo="@id/DetailPaymentFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_detailpayment_to_paymentoptions"
+            app:destination="@id/PaymentOptionsFragment"
+            app:popUpTo="@id/DetailPaymentFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/PaymentOptionsFragment"
+        android:name="com.mhandharbeni.e_parking.fragments.PaymentOptionsFragment"
+        android:label="Payment Options"
+        tools:layout="@layout/fragment_payment_options">
+        <action
+            android:id="@+id/action_options_to_main"
+            app:destination="@id/MainFragment"
+            app:popUpTo="@id/PaymentOptionsFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

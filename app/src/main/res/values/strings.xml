@@ -54,4 +54,7 @@
     <string name="print_jukir_name">Nama Jukir</string>
     <string name="print_jukir_location">Lokasi</string>
     <string name="bayar">BAYAR</string>
+    <string name="cash">CASH</string>
+    <string name="qris">QRIS</string>
+    <string name="tapcash">TAPCASH</string>
 </resources>

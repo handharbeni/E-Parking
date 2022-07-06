@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailBayarBinding;
@@ -36,6 +37,8 @@ public class DetailPaymentFragment extends BaseFragment {
         if (args != null) {
             parked = (Parked) args.getSerializable(Constant.KEY_DETAIL_TIKET);
             bindData();
+
+            setupTrigger();
         }
     }
 
@@ -66,5 +69,13 @@ public class DetailPaymentFragment extends BaseFragment {
         binding.txtNamaJukir.setText("JUKIR DEV");
         binding.txtLokasiJukir.setText("JL. Diponegoro - Indomart");
         binding.imagePreview.setImageBitmap(UtilImage.base64ToImage(parked.getImage()));
+    }
+
+    void setupTrigger() {
+        binding.btnBayar.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+            navigate(R.id.action_detailpayment_to_paymentoptions, args);
+        });
     }
 }
