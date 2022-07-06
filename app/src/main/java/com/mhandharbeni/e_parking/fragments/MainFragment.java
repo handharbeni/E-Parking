@@ -1,25 +1,23 @@
 package com.mhandharbeni.e_parking.fragments;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.gson.Gson;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentMainBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilDate;
 import com.mhandharbeni.e_parking.utils.UtilNav;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.skydoves.balloon.ArrowOrientation;
@@ -27,7 +25,12 @@ import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
-import com.skydoves.balloon.OnBalloonClickListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainFragment extends Fragment {
 
@@ -45,6 +48,7 @@ public class MainFragment extends Fragment {
 
         setupNavigation();
         setupTrigger();
+        setupDb();
         return binding.getRoot();
 
     }
@@ -57,6 +61,21 @@ public class MainFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    void setupDb() {
+        AppDb.getInstance(requireContext()).parked().getLive(false, UtilDate.getNow()).observe(
+                getViewLifecycleOwner(),
+                parkeds -> {
+                    int totalKendaraan = 0;
+                    int totalPaid = 0;
+                    for (Parked parked : parkeds) {
+                        totalKendaraan++;
+                        totalPaid += parked.getPrice();
+                    }
+                    binding.edtPendapatan.setText(String.valueOf(totalPaid));
+                    binding.edtKarcis.setText(String.valueOf(totalKendaraan));
+                });
     }
 
     void setupNavigation() {
@@ -104,7 +123,8 @@ public class MainFragment extends Fragment {
                 v -> navController.navigate(R.id.action_main_to_bt));
         balloon.getContentView().findViewById(R.id.btnLogout).setOnClickListener(
                 v -> navController.navigate(R.id.action_main_to_login));
-        balloon.getContentView().findViewById(R.id.btnAbout).setOnClickListener(v -> {});
+        balloon.getContentView().findViewById(R.id.btnAbout).setOnClickListener(v -> {
+        });
 
     }
 

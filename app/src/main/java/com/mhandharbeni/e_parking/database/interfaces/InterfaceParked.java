@@ -38,8 +38,8 @@ public interface InterfaceParked {
     @Query("SELECT * FROM parked")
     LiveData<List<Parked>> getLive();
 
-    @Query("SELECT * FROM parked WHERE isSync = :isSync")
-    LiveData<List<Parked>> getLiveByStatus(boolean isSync);
+    @Query("SELECT * FROM parked WHERE isSync = :isSync AND date >= :date AND checkOut != 0")
+    LiveData<List<Parked>> getLive(boolean isSync, long date);
 
     @Query("SELECT * FROM parked WHERE id = :value")
     Parked getButtonById(int value);
