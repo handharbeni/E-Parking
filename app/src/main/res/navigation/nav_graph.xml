@@ -85,5 +85,21 @@
             app:destination="@id/MainFragment"
             app:popUpTo="@id/CheckoutFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_checkout_to_detailpayment"
+            app:destination="@id/DetailPaymentFragment"
+            app:popUpTo="@id/CheckoutFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DetailPaymentFragment"
+        android:name="com.mhandharbeni.e_parking.fragments.DetailPaymentFragment"
+        android:label="Detail Payment"
+        tools:layout="@layout/fragment_detail_bayar">
+        <action
+            android:id="@+id/action_detail_payment_to_main"
+            app:destination="@id/MainFragment"
+            app:popUpTo="@id/DetailPaymentFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

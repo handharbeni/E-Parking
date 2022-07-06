@@ -1,24 +1,19 @@
 package com.mhandharbeni.e_parking.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
-import com.mhandharbeni.e_parking.database.AppDb;
+import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentMainBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilDate;
-import com.mhandharbeni.e_parking.utils.UtilNav;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
@@ -26,16 +21,9 @@ import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     private FragmentMainBinding binding;
-    NavController navController;
 
     @Override
     public View onCreateView(
@@ -64,7 +52,7 @@ public class MainFragment extends Fragment {
     }
 
     void setupDb() {
-        AppDb.getInstance(requireContext()).parked().getLive(false, UtilDate.getNow()).observe(
+        appDb.parked().getLive(false, UtilDate.getNow()).observe(
                 getViewLifecycleOwner(),
                 parkeds -> {
                     int totalKendaraan = 0;
@@ -87,17 +75,17 @@ public class MainFragment extends Fragment {
         binding.btnCheckin.setOnClickListener(
                 v -> {
                     if (!UtilPermission.checkPermission(requireContext())) {
-                        new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
                     } else {
-                        navController.navigate(R.id.action_main_to_checkin);
+                        navigate(R.id.action_main_to_checkin);
                     }
                 });
         binding.btnCheckout.setOnClickListener(
                 v -> {
                     if (!UtilPermission.checkPermission(requireContext())) {
-                        new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
                     } else {
-                        navController.navigate(R.id.action_main_to_checkout);
+                        navigate(R.id.action_main_to_checkout);
                     }
                 }
         );
@@ -120,9 +108,9 @@ public class MainFragment extends Fragment {
                 .build();
         balloon.showAlignBottom(binding.header.menu);
         balloon.getContentView().findViewById(R.id.btnBt).setOnClickListener(
-                v -> navController.navigate(R.id.action_main_to_bt));
+                v -> navigate(R.id.action_main_to_bt));
         balloon.getContentView().findViewById(R.id.btnLogout).setOnClickListener(
-                v -> navController.navigate(R.id.action_main_to_login));
+                v -> navigate(R.id.action_main_to_login));
         balloon.getContentView().findViewById(R.id.btnAbout).setOnClickListener(v -> {
         });
 

@@ -42,11 +42,14 @@ public interface InterfaceParked {
     LiveData<List<Parked>> getLive(boolean isSync, long date);
 
     @Query("SELECT * FROM parked WHERE id = :value")
-    Parked getButtonById(int value);
+    Parked getParkedById(int value);
 
     @Query("SELECT * FROM parked WHERE platNumber = :value AND isSync = :isSync")
-    Parked getButtonByPlatNumber(String value, boolean isSync);
+    Parked getParkedByPlatNumber(String value, boolean isSync);
+
+    @Query("SELECT * FROM parked WHERE platNumber = :platNo AND date = :date")
+    Parked getParked(String platNo, long date);
 
     @Query("SELECT * FROM parked WHERE isSync = :isSync")
-    List<Parked> getButtonByMode(boolean isSync);
+    List<Parked> getParkedByMode(boolean isSync);
 }

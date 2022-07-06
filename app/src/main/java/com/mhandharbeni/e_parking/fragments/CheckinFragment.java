@@ -1,8 +1,6 @@
 package com.mhandharbeni.e_parking.fragments;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,9 +13,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
@@ -32,19 +27,16 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.mhandharbeni.e_parking.R;
-import com.mhandharbeni.e_parking.database.AppDb;
+import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckinBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
-import com.mhandharbeni.e_parking.utils.UtilNav;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.priyankvasa.android.cameraviewex.CameraView;
 import com.priyankvasa.android.cameraviewex.Image;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
-import com.skydoves.balloon.OnBalloonClickListener;
-import com.skydoves.balloon.OnBalloonOverlayClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,13 +45,11 @@ import java.util.Objects;
 
 import kotlin.Unit;
 
-public class CheckinFragment extends Fragment {
+public class CheckinFragment extends BaseFragment {
     private final String TAG = CheckinFragment.class.getSimpleName();
 
     FragmentCheckinBinding binding;
     CameraView cameraView;
-
-    NavController navController;
 
     private TextRecognizer recognizer;
     private RequestManager glideManager;
@@ -80,7 +70,7 @@ public class CheckinFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!UtilPermission.checkPermission(requireContext())) {
-            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+            setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
         } else {
             setupLibs();
             setupCamera();
@@ -102,7 +92,7 @@ public class CheckinFragment extends Fragment {
             return Unit.INSTANCE;
         });
         if (!UtilPermission.checkPermission(requireContext())) {
-            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+            setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
             return;
         }
         cameraView.start();
@@ -116,7 +106,7 @@ public class CheckinFragment extends Fragment {
         binding.btnTakePicture.setOnClickListener(v -> {
             try {
                 if (!UtilPermission.checkPermission(requireContext())) {
-                    new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                    setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
                     return;
                 }
                 cameraView.capture();
@@ -162,7 +152,7 @@ public class CheckinFragment extends Fragment {
         parked.setSync(false);
         parked.setPrice(price);
 
-        AppDb.getInstance(requireContext()).parked().insert(parked);
+        appDb.parked().insert(parked);
 
         Balloon balloon = new Balloon.Builder(requireContext())
                 .setLayout(R.layout.popup_success)
@@ -182,7 +172,7 @@ public class CheckinFragment extends Fragment {
             if (parked != null) {
                 Bundle args = new Bundle();
                 args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
-                navController.navigate(R.id.action_checkin_to_detail, args);
+                navigate(R.id.action_checkin_to_detail, args);
             }
         });
     }
@@ -254,7 +244,7 @@ public class CheckinFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (!UtilPermission.checkPermission(requireContext())) {
-            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+            setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
         } else {
             try {
                 cameraView.start();

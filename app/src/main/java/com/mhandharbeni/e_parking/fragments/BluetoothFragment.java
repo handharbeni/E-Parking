@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.adapters.BluetoothDevicesAdapter;
+import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.databinding.FragmentBluetoothBinding;
 import com.mhandharbeni.e_parking.events.BluetoothEvent;
 import com.mhandharbeni.e_parking.utils.Constant;
@@ -30,7 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapter.DeviceCallback {
+public class BluetoothFragment extends BaseFragment implements BluetoothDevicesAdapter.DeviceCallback {
     private final String TAG = BluetoothFragment.class.getSimpleName();
     BluetoothDevicesAdapter bluetoothDevicesAdapter;
     private FragmentBluetoothBinding binding;
@@ -43,29 +45,23 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
 
         binding = FragmentBluetoothBinding.inflate(inflater, container, false);
 
+        navController = NavHostFragment.findNavController(this);
+
         initAdapter();
+
         sendRequest();
-        new UtilNav<BluetoothStatus>()
-                .observeValue(
-                        NavHostFragment.findNavController(BluetoothFragment.this),
-                        getViewLifecycleOwner(),
-                        Constant.BLUETOOTH_CONNECTED_STRING,
-                        bluetoothStatus -> {
-                            if (bluetoothStatus == BluetoothStatus.NONE) {
-                                bluetoothDevicesAdapter.refreshData();
-                            }
-                        });
+
+        observe(Constant.BLUETOOTH_CONNECTED_STRING, (Observer<BluetoothStatus>) bluetoothStatus -> {
+            if (bluetoothStatus == BluetoothStatus.NONE) {
+                bluetoothDevicesAdapter.refreshData();
+            }
+        });
 
         binding.refreshDevice.setOnRefreshListener(this::sendRequest);
 
         requireActivity().runOnUiThread(() -> {
             binding.refreshDevice.setRefreshing(true);
             sendRequest();
-//            new UtilNav<String>()
-//                    .setStateHandle(
-//                            NavHostFragment.findNavController(BluetoothFragment.this),
-//                            Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
-//                    );
         });
         return binding.getRoot();
     }
@@ -99,27 +95,17 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
     public void onDeviceClick(BluetoothDevice device) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!UtilPermission.checkPermission(requireContext())) {
-                new UtilNav<Fragment>()
-                        .setStateHandle(
-                                NavHostFragment
-                                        .findNavController(BluetoothFragment.this),
-                                Constant.REQUEST_PERMISSION,
-                                BluetoothFragment.this);
+                setState(Constant.REQUEST_PERMISSION, BluetoothFragment.this);
             }
+
+
         }
-        new UtilNav<BluetoothDevice>()
-                .setStateHandle(
-                        NavHostFragment.findNavController(BluetoothFragment.this),
-                        Constant.BLUETOOTH_CONNECT_REQUEST, device
-                );
+
+        setState(Constant.BLUETOOTH_CONNECT_REQUEST, device);
     }
 
     void sendRequest() {
-        new UtilNav<String>()
-                .setStateHandle(
-                        NavHostFragment.findNavController(BluetoothFragment.this),
-                        Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
-                );
+        setState(Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName());
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

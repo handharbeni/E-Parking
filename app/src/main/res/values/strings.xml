@@ -49,4 +49,9 @@
     <string name="print_ticket_number">Nomor Tiket</string>
     <string name="print_platno">Plat Nomor</string>
     <string name="print_price">Harga</string>
+    <string name="print_duration">Durasi</string>
+    <string name="print_jukir_id">ID Jukir</string>
+    <string name="print_jukir_name">Nama Jukir</string>
+    <string name="print_jukir_location">Lokasi</string>
+    <string name="bayar">BAYAR</string>
 </resources>

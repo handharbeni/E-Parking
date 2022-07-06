@@ -14,25 +14,22 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailTiketBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
-import com.mhandharbeni.e_parking.utils.UtilNav;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class DetailTiketFragment extends Fragment {
+public class DetailTiketFragment extends BaseFragment {
     private final String TAG = DetailTiketFragment.class.getSimpleName();
 
-    NavController navController;
     FragmentDetailTiketBinding binding;
 
     Parked parked;
@@ -45,8 +42,8 @@ public class DetailTiketFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDetailTiketBinding.inflate(inflater, container, false);
 
-        setupBundle();
         setupLibs();
+        setupBundle();
 
         return binding.getRoot();
     }
@@ -72,9 +69,9 @@ public class DetailTiketFragment extends Fragment {
 
     void setupTrigger() {
         binding.btnPrint.setOnClickListener(v -> {
-            new UtilNav<Parked>().setStateHandle(navController, Constant.BLUETOOTH_PRINT, parked);
+            setState(Constant.BLUETOOTH_PRINT, parked);
         });
-        binding.btnDone.setOnClickListener(v -> navController.navigate(R.id.action_detail_to_main));
+        binding.btnDone.setOnClickListener(v -> navigate(R.id.action_detail_to_main));
     }
 
     void setupData() {
@@ -123,7 +120,7 @@ public class DetailTiketFragment extends Fragment {
             binding.txtType.setText(String.format("Kendaraan: %s", type));
             binding.txtPrice.setText(String.format("Tarif: %s", String.valueOf(parked.getPrice())));
         } else {
-            navController.navigate(R.id.action_detail_to_main);
+            navigate(R.id.action_detail_to_main);
         }
     }
 }
