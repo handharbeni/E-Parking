@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.ItemParkedBinding;
 
@@ -54,9 +55,9 @@ public class ParkedAdapter extends RecyclerView.Adapter<ParkedAdapter.ViewHolder
                 vehicle = "Bus Besar";
                 break;
         }
-        holder.binding.txtPlatNo.setText(parked.getPlatNumber());
-        holder.binding.txtVehicle.setText(vehicle);
-        holder.binding.txtTicketNo.setText(parked.getTicketNumber());
+        holder.binding.txtPlatNo.setText(String.format("%s: %s", context.getResources().getString(R.string.print_platno), parked.getPlatNumber()));
+        holder.binding.txtVehicle.setText(String.format("%s: %s", context.getResources().getString(R.string.print_vehicle), vehicle));
+        holder.binding.txtTicketNo.setText(String.format("%s: %s", context.getResources().getString(R.string.print_ticket_number), parked.getTicketNumber()));
         holder.itemView.setOnClickListener(v -> {
             parkedCallback.onItemParkedClick(parked);
         });

@@ -41,6 +41,9 @@ public interface InterfaceParked {
     @Query("SELECT * FROM parked WHERE isSync = :isSync AND date >= :date AND checkOut != 0")
     LiveData<List<Parked>> getLive(boolean isSync, long date);
 
+    @Query("SELECT * FROM parked WHERE isSync = 0 AND date >= :date AND checkOut == 0")
+    LiveData<List<Parked>> getLive(long date);
+
     @Query("SELECT * FROM parked WHERE id = :value")
     Parked getParkedById(int value);
 

@@ -23,6 +23,7 @@ import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailTiketBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilDate;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -114,7 +115,7 @@ public class DetailTiketFragment extends BaseFragment {
                     break;
             }
 
-            binding.txtDate.setText(String.format("Tanggal: %d", parked.getDate()));
+            binding.txtDate.setText(String.format("Tanggal: %d", UtilDate.longToDate(parked.getDate(), "dd/MM/yyyy")));
             binding.txtNoTiket.setText(String.format("No. Karcis: %s", parked.getTicketNumber()));
             binding.txtNoPol.setText(String.format("Nomor Polisi: %s", parked.getPlatNumber()));
             binding.txtType.setText(String.format("Kendaraan: %s", type));

@@ -14,6 +14,7 @@ import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailBayarBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilDate;
 import com.mhandharbeni.e_parking.utils.UtilImage;
 
 public class DetailPaymentFragment extends BaseFragment {
@@ -61,8 +62,8 @@ public class DetailPaymentFragment extends BaseFragment {
 
         binding.txtNoTiket.setText(parked.getTicketNumber());
         binding.txtKendaraan.setText(type);
-        binding.txtTimeIn.setText(String.valueOf(parked.getCheckIn()));
-        binding.txtTimeOut.setText(String.valueOf(parked.getCheckOut()));
+        binding.txtTimeIn.setText(UtilDate.longToDate(parked.getCheckIn(), "HH:mm:ss"));
+        binding.txtTimeOut.setText(UtilDate.longToDate(parked.getCheckOut(), "HH:mm:ss"));
         binding.txtDuration.setText("0");
         binding.txtTarif.setText(String.valueOf(parked.getPrice()));
         binding.txtIdJukir.setText("JK-0012345");

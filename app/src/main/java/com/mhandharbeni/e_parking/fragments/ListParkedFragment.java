@@ -50,7 +50,7 @@ public class ListParkedFragment extends BaseFragment implements ParkedAdapter.Pa
     }
 
     void setupData() {
-        appDb.parked().getLive(false, UtilDate.getNow()).observe(getViewLifecycleOwner(), parkeds -> {
+        appDb.parked().getLive(UtilDate.getNow()).observe(getViewLifecycleOwner(), parkeds -> {
             try {
                 parkedAdapter.updateData(parkeds);
             } catch (Exception ignored){}
