@@ -50,6 +50,9 @@ public interface InterfaceParked {
     @Query("SELECT * FROM parked WHERE platNumber = :platNo AND date = :date")
     Parked getParked(String platNo, long date);
 
+    @Query("SELECT * FROM parked WHERE platNumber = :platNo AND checkOut = 0")
+    Parked getParked(String platNo);
+
     @Query("SELECT * FROM parked WHERE isSync = :isSync")
     List<Parked> getParkedByMode(boolean isSync);
 }

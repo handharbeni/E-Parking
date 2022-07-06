@@ -1,327 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <com.google.android.material.textview.MaterialTextView
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:lineHeight="100dp"
-        android:id="@+id/txtHeader"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:text="DETAIL BAYAR"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelTiket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtHeader">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelNoTiket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_ticket_number"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:lineHeight="100dp"
+            android:id="@+id/txtHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:text="DETAIL BAYAR"
             android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtNoTiket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_ticket_number"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelKendaraan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelTiket">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelKendaraan"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelTiket"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_vehicle"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtKendaraan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_vehicle"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/txtHeader">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelTimeIn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelKendaraan">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelNoTiket"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_ticket_number"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelTimeIn"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtNoTiket"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_ticket_number"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelKendaraan"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_time_in"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtTimeIn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_time_in"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelTiket">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelTimeOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelTimeIn">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelKendaraan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_vehicle"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelTimeOut"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtKendaraan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_vehicle"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelTimeIn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_time_out"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtTimeOut"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_time_out"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelKendaraan">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelDuration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelTimeOut">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelTimeIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_time_in"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelDuration"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtTimeIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_time_in"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelTimeOut"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_duration"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtDuration"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_duration"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelTimeIn">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelTarif"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelDuration">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelTimeOut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_time_out"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelTarif"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtTimeOut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_time_out"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelDuration"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_price"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtTarif"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_price"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelTimeOut">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelIdJukir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelTarif">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelDuration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_duration"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelIdJukir"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtDuration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_duration"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelTarif"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_jukir_id"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtIdJukir"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_jukir_id"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelDuration">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelNamaJukir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelIdJukir">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelTarif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_price"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelNamaJukir"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtTarif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_price"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelIdJukir"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_jukir_name"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:id="@+id/txtNamaJukir"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_jukir_name"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelTarif">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panelLokasiJukir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/panelNamaJukir">
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelIdJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_id"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:textSize="16sp"
-            android:id="@+id/labelLokasiJukir"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtIdJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_id"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelNamaJukir"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/print_jukir_location"
-            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:textStyle="bold"
-            android:lineHeight="150dp"
-            android:textSize="16sp"
-            android:id="@+id/txtLokasiJukir"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/print_jukir_location"
-            android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/panelIdJukir">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnBayar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bayar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelNamaJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_name"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:id="@+id/txtNamaJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_name"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panelLokasiJukir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/panelNamaJukir">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:textSize="16sp"
+                android:id="@+id/labelLokasiJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_location"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:textStyle="bold"
+                android:lineHeight="150dp"
+                android:textSize="16sp"
+                android:id="@+id/txtLokasiJukir"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/print_jukir_location"
+                android:textColor="@color/white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.mhandharbeni.e_parking.views.CustomImageView
+            app:customAspectRatio="1"
+            app:customAspectRatioEnabled="true"
+            app:customDominantMeasurement="width"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:id="@+id/imagePreview"
+            app:layout_constraintTop_toBottomOf="@id/panelLokasiJukir"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/todo" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBayar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bayar"
+            app:layout_constraintTop_toBottomOf="@id/imagePreview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

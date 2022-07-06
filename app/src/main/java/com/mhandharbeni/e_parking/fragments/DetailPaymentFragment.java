@@ -13,6 +13,7 @@ import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailBayarBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilImage;
 
 public class DetailPaymentFragment extends BaseFragment {
     FragmentDetailBayarBinding binding;
@@ -64,5 +65,6 @@ public class DetailPaymentFragment extends BaseFragment {
         binding.txtIdJukir.setText("JK-0012345");
         binding.txtNamaJukir.setText("JUKIR DEV");
         binding.txtLokasiJukir.setText("JL. Diponegoro - Indomart");
+        binding.imagePreview.setImageBitmap(UtilImage.base64ToImage(parked.getImage()));
     }
 }

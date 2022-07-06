@@ -17,6 +17,9 @@ import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckoutBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 
 import java.util.Objects;
 
@@ -27,6 +30,8 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
 
     FragmentCheckoutBinding binding;
     Parked parked;
+
+    Balloon balloon;
 
     @Nullable
     @Override
@@ -56,8 +61,18 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
             String date = aResult[1];
             Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(aResult[0]);
             parked = appDb.parked().getParked(platNo, Long.parseLong(date));
-        } catch (Exception ignored) {}
-        binding.imageKendaraan.startSpot();
+            if (parked != null) {
+                Bundle args = new Bundle();
+                args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+                navigate(R.id.action_checkout_to_detailpayment, args);
+            } else {
+                showBaloonError();
+            }
+        } catch (Exception ignored) {
+            showBaloonError();
+        } finally {
+            binding.imageKendaraan.startSpot();
+        }
     }
 
     @Override
@@ -93,7 +108,37 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
                 Bundle args = new Bundle();
                 args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                 navigate(R.id.action_checkout_to_detailpayment, args);
+            } else {
+                parked = appDb.parked().getParked(binding.edtPlatNomor.getEditText().getText().toString());
+                if (parked != null) {
+                    Bundle args = new Bundle();
+                    args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+                    navigate(R.id.action_checkout_to_detailpayment, args);
+                } else {
+                    showBaloonError();
+                }
             }
         });
+    }
+    void showBaloonError() {
+        if (balloon != null) {
+            balloon.dismiss();
+            balloon = null;
+        }
+        balloon = new Balloon.Builder(requireContext())
+                .setLayout(R.layout.popup_error)
+                .setIsVisibleArrow(false)
+                .setWidth(BalloonSizeSpec.WRAP)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setTextSize(15f)
+                .setCornerRadius(4f)
+                .setAlpha(0.9f)
+                .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                .setLifecycleOwner(getViewLifecycleOwner())
+                .build();
+
+        balloon.showAlignBottom(binding.panelCamera);
+        balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
+        balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
     }
 }
