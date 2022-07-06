@@ -1,14 +1,17 @@
 package com.mhandharbeni.e_parking;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
@@ -18,7 +21,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -47,6 +49,7 @@ import com.mhandharbeni.e_parking.utils.Util;
 import com.mhandharbeni.e_parking.utils.UtilDate;
 import com.mhandharbeni.e_parking.utils.UtilNav;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
+import com.skydoves.balloon.Balloon;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,7 +58,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -179,13 +181,6 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         if (writeStoragePermission) {
             initDb();
         }
-
-//        if (readStoragePermission && writeStoragePermission && fineLocationPermission && coarseLocationPermission) {
-//            try {
-//                navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(),true);
-//                navController.navigate(navController.getCurrentDestination().getId());
-//            } catch (Exception ignored) {}
-//        }
     }
 
     void initDb() {
@@ -243,60 +238,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     }
 
     void print(Parked parked) {
-        EscPosPrinter printer;
-        try {
-            WindowManager manager = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
-            Display display = manager.getDefaultDisplay();
-            Point point = new Point();
-            display.getSize(point);
-            int width = point.x;
-            int height = point.y;
-            int smallerDimension = Math.min(width, height);
-            smallerDimension = smallerDimension * 3 / 4;
-
-            String inputValue = "";
-            inputValue += parked.getPlatNumber();
-            inputValue += ",_,";
-            inputValue += parked.getDate();
-
-            QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
-            qrgEncoder.setColorBlack(Color.BLACK);
-            qrgEncoder.setColorWhite(Color.WHITE);
-
-            Bitmap bitmap = qrgEncoder.getBitmap();
-
-            String vehicle = "Motor";
-            switch (parked.getType()) {
-                case 0 :
-                    vehicle = "Motor";
-                    break;
-                case 1 :
-                    vehicle = "Mobil";
-                    break;
-                case 2 :
-                    vehicle = "Bus Mini";
-                    break;
-                case 3 :
-                    vehicle = "Bus Besar";
-                    break;
-            }
-
-            printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
-            printer.printFormattedText(
-                    "[C]<b><font size='big'>" + getResources().getString(R.string.app_name) + "</font></b>\n" +
-                    "[C]<u><font size='normal'>" + getResources().getString(R.string.long_name) + "</font></u>\n" +
-                    "[C]================================\n" +
-                    "[L]" + getResources().getString(R.string.print_date) + "[R]"+ UtilDate.longToDate(parked.getDate(),"MM/dd/yyyy")+"\n" +
-                    "[L]" + getResources().getString(R.string.print_time_in) + "[R]"+ UtilDate.longToDate(parked.getCheckIn(),"HH:mm:ss")+"\n" +
-                    "[L]" + getResources().getString(R.string.print_vehicle) + "[R]"+vehicle+"\n" +
-                    "[L]" + getResources().getString(R.string.print_ticket_number) + "[R]"+parked.getTicketNumber()+"\n" +
-                    "[L]" + getResources().getString(R.string.print_platno) + "[R]"+parked.getPlatNumber()+"\n" +
-                    "[L]" + getResources().getString(R.string.print_price) + "[R]"+parked.getPrice()+"\n" +
-                    "[C]================================\n" +
-                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n"
-            );
-        } catch (EscPosConnectionException | EscPosEncodingException | EscPosBarcodeException | EscPosParserException ignored) {
-        }
+        new PrintAsyncTask(this, getApplicationContext()).execute(parked);
     }
 
     @Override
@@ -367,5 +309,93 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     @Override
     public void onStopScan() {
 
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private static class PrintAsyncTask extends AsyncTask<Parked, Boolean, Boolean> {
+        private Context context;
+        private ProgressDialog dialog;
+
+        public PrintAsyncTask(Activity activity, Context context) {
+            this.context = context;
+            dialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setCancelable(false);
+            dialog.setIndeterminate(true);
+            dialog.setMessage("Printing");
+            dialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Parked... parkeds) {
+            EscPosPrinter printer;
+            try {
+                Parked parked = parkeds[0];
+                WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+                Display display = manager.getDefaultDisplay();
+                Point point = new Point();
+                display.getSize(point);
+                int width = point.x;
+                int height = point.y;
+                int smallerDimension = Math.min(width, height);
+                smallerDimension = smallerDimension * 3 / 4;
+
+                String inputValue = "";
+                inputValue += parked.getPlatNumber();
+                inputValue += ",_,";
+                inputValue += parked.getDate();
+
+                QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
+                qrgEncoder.setColorBlack(Color.BLACK);
+                qrgEncoder.setColorWhite(Color.WHITE);
+
+                Bitmap bitmap = qrgEncoder.getBitmap();
+
+                String vehicle = "Motor";
+                switch (parked.getType()) {
+                    case 0 :
+                        vehicle = "Motor";
+                        break;
+                    case 1 :
+                        vehicle = "Mobil";
+                        break;
+                    case 2 :
+                        vehicle = "Bus Mini";
+                        break;
+                    case 3 :
+                        vehicle = "Bus Besar";
+                        break;
+                }
+
+                printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
+                printer.printFormattedText(
+                        "[C]<b><font size='big'>" + context.getResources().getString(R.string.app_name) + "</font></b>\n" +
+                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_first) + "</font></u>\n" +
+                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_second) + "</font></u>\n" +
+                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_third) + "</font></u>\n" +
+                                "[C]================================\n" +
+                                "[L]" + context.getResources().getString(R.string.print_date) + "[R]"+ UtilDate.longToDate(parked.getDate(),"MM/dd/yyyy")+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_time_in) + "[R]"+ UtilDate.longToDate(parked.getCheckIn(),"HH:mm:ss")+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_vehicle) + "[R]"+vehicle+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_ticket_number) + "[R]"+parked.getTicketNumber()+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_platno) + "[R]"+parked.getPlatNumber()+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_price) + "[R]"+parked.getPrice()+"\n" +
+                                "[C]================================\n" +
+                                "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n"
+                );
+            } catch (EscPosConnectionException | EscPosEncodingException | EscPosBarcodeException | EscPosParserException ignored) {
+            }
+            return false;
+        }
     }
 }

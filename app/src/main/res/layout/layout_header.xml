@@ -31,7 +31,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:textSize="10sp"
             android:textColor="@color/white"
-            android:text="@string/long_name"
+            android:text="@string/long_name_first"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>

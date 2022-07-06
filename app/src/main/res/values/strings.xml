@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">SIMePKWB</string>
     <string name="long_name">Sistem Informasi Manajemen eParkir Kota Wisata Batu</string>
+    <string name="long_name_first">Sistem Informasi Manajemen</string>
+    <string name="long_name_second">eParkir</string>
+    <string name="long_name_third">Kota Wisata Batu</string>
     <string name="action_settings">Pengaturan</string>
     <!-- Strings used for fragments for navigation -->
     <string name="login_fragment">Halaman Masuk</string>

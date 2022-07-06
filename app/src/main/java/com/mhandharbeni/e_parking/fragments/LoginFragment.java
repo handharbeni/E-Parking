@@ -11,6 +11,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.databinding.FragmentLoginBinding;
+import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.Util;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonCenterAlign;
+import com.skydoves.balloon.BalloonSizeSpec;
 
 public class LoginFragment extends Fragment {
 
@@ -26,7 +32,6 @@ public class LoginFragment extends Fragment {
 
         binding.btnLogin.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this)
                 .navigate(R.id.action_login_to_main));
-
         return binding.getRoot();
 
     }

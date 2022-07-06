@@ -175,7 +175,7 @@ public class CheckinFragment extends Fragment {
                 .setBalloonAnimation(BalloonAnimation.ELASTIC)
                 .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
-        balloon.showAtCenter(binding.getRoot());
+        balloon.showAlignBottom(binding.panelCamera);
         balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
         balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
         balloon.setOnBalloonDismissListener(() -> {

@@ -3,7 +3,9 @@ package com.mhandharbeni.e_parking.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
+import android.graphics.Point;
 import android.location.LocationManager;
+import android.view.WindowManager;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -94,5 +96,14 @@ public class Util {
             returns.append(c);
         }
         return returns.toString();
+    }
+
+    public static Point getScreenSize(Context context) {
+        Point point = new Point();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm.getDefaultDisplay() != null) {
+            wm.getDefaultDisplay().getSize(point);
+        }
+        return point;
     }
 }

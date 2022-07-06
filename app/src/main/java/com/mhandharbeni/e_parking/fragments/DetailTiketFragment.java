@@ -24,6 +24,7 @@ import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailTiketBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilNav;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -70,7 +71,9 @@ public class DetailTiketFragment extends Fragment {
     }
 
     void setupTrigger() {
-        binding.btnPrint.setOnClickListener(v -> {});
+        binding.btnPrint.setOnClickListener(v -> {
+            new UtilNav<Parked>().setStateHandle(navController, Constant.BLUETOOTH_PRINT, parked);
+        });
         binding.btnDone.setOnClickListener(v -> navController.navigate(R.id.action_detail_to_main));
     }
 
