@@ -1,20 +1,20 @@
 <resources>
     <string name="app_name">SIMePKWB</string>
     <string name="long_name">Sistem Informasi Manajemen eParkir Kota Wisata Batu</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Pengaturan</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="login_fragment">Login Screen</string>
-    <string name="main_screen">Main Screen</string>
-    <string name="bt_screen">Bluetooth Screen</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="login_fragment">Halaman Masuk</string>
+    <string name="main_screen">Halaman Utama</string>
+    <string name="bt_screen">Halaman Bluetooth</string>
+    <string name="next">Selanjutnya</string>
+    <string name="previous">Sebelumnya</string>
 
-    <string name="label_connecting">CONNECTING</string>
-    <string name="device_name">Device Name</string>
-    <string name="device_address">Device Address</string>
+    <string name="label_connecting">Menyambungkan</string>
+    <string name="device_name">Nama Device</string>
+    <string name="device_address">Alamat Device</string>
     <string name="id_jukir">ID Jukir</string>
-    <string name="password">Password</string>
-    <string name="sign_in">Sign In</string>
+    <string name="password">Kata Kunci</string>
+    <string name="sign_in">Masuk</string>
     <string name="label_total">TOTAL TRANSAKSI HARI INI</string>
     <string name="pendapatan">PENDAPATAN</string>
     <string name="karcis">KARCIS</string>
@@ -26,15 +26,24 @@
     <string name="label_address">JL ALUN ALUN</string>
     <string name="checkin_screen">Checkin Fragment</string>
     <string name="connect_printer">Connect Printer</string>
-    <string name="log_out">Log Out</string>
+    <string name="log_out">Keluar</string>
     <string name="plat_nomor">Plat Nomor</string>
     <string name="pilih_jenis_kendaraan">Pilih Jenis Kendaraan</string>
     <string name="motor">MOTOR</string>
     <string name="mobil">MOBIL</string>
     <string name="bus_mini">BUS MINI</string>
     <string name="bus_besar">BUS BESAR</string>
-    <string name="recorded">RECORDED</string>
-    <string name="about_simepkwb">About SIMePKWB</string>
+    <string name="recorded">Tersimpan</string>
+    <string name="about_simepkwb">Tentang SIMePKWB</string>
     <string name="todo">TODO</string>
     <string name="detail_karcis">Detail Karcis</string>
+
+    <string name="print_title">Karcis Parkir</string>
+    <string name="print_date">Tanggal</string>
+    <string name="print_time_in">Jam Masuk</string>
+    <string name="print_time_out">Jam Keluar</string>
+    <string name="print_vehicle">Kendaraan</string>
+    <string name="print_ticket_number">Nomor Tiket</string>
+    <string name="print_platno">Plat Nomor</string>
+    <string name="print_price">Harga</string>
 </resources>

@@ -18,8 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.adapters.BluetoothDevicesAdapter;
 import com.mhandharbeni.e_parking.databinding.FragmentBluetoothBinding;
+import com.mhandharbeni.e_parking.events.BluetoothEvent;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilNav;
+import com.mhandharbeni.e_parking.utils.UtilPermission;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +44,7 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
         binding = FragmentBluetoothBinding.inflate(inflater, container, false);
 
         initAdapter();
-
+        sendRequest();
         new UtilNav<BluetoothStatus>()
                 .observeValue(
                         NavHostFragment.findNavController(BluetoothFragment.this),
@@ -50,20 +56,16 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
                             }
                         });
 
-        binding.refreshDevice.setOnRefreshListener(() ->
-                new UtilNav<String>()
-                        .setStateHandle(
-                                NavHostFragment.findNavController(BluetoothFragment.this),
-                                Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
-                        ));
+        binding.refreshDevice.setOnRefreshListener(this::sendRequest);
 
         requireActivity().runOnUiThread(() -> {
             binding.refreshDevice.setRefreshing(true);
-            new UtilNav<String>()
-                    .setStateHandle(
-                            NavHostFragment.findNavController(BluetoothFragment.this),
-                            Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
-                    );
+            sendRequest();
+//            new UtilNav<String>()
+//                    .setStateHandle(
+//                            NavHostFragment.findNavController(BluetoothFragment.this),
+//                            Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
+//                    );
         });
         return binding.getRoot();
     }
@@ -96,8 +98,7 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
     @Override
     public void onDeviceClick(BluetoothDevice device) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT)
-                    != PackageManager.PERMISSION_GRANTED) {
+            if (!UtilPermission.checkPermission(requireContext())) {
                 new UtilNav<Fragment>()
                         .setStateHandle(
                                 NavHostFragment
@@ -111,5 +112,37 @@ public class BluetoothFragment extends Fragment implements BluetoothDevicesAdapt
                         NavHostFragment.findNavController(BluetoothFragment.this),
                         Constant.BLUETOOTH_CONNECT_REQUEST, device
                 );
+    }
+
+    void sendRequest() {
+        new UtilNav<String>()
+                .setStateHandle(
+                        NavHostFragment.findNavController(BluetoothFragment.this),
+                        Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName()
+                );
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onConnect(BluetoothEvent bluetoothEvent) {
+        if (bluetoothEvent.message == BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED) {
+            try {
+                if (bluetoothEvent.btStatus == BluetoothStatus.NONE) {
+                    bluetoothDevicesAdapter.refreshData();
+                }
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

@@ -36,11 +36,15 @@ import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckinBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilNav;
+import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.priyankvasa.android.cameraviewex.CameraView;
 import com.priyankvasa.android.cameraviewex.Image;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
+import com.skydoves.balloon.OnBalloonClickListener;
+import com.skydoves.balloon.OnBalloonOverlayClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -75,10 +79,13 @@ public class CheckinFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        setupLibs();
-        setupCamera();
-        setupTrigger();
+        if (!UtilPermission.checkPermission(requireContext())) {
+            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+        } else {
+            setupLibs();
+            setupCamera();
+            setupTrigger();
+        }
     }
 
     void setupLibs() {
@@ -88,12 +95,14 @@ public class CheckinFragment extends Fragment {
 
     void setupCamera() {
         cameraView = binding.imageKendaraan;
+        cameraView.setAdjustViewBounds(true);
         cameraView.addCameraOpenedListener(() -> Unit.INSTANCE);
         cameraView.addPictureTakenListener((Image image) -> {
             showCapturePreview(image);
             return Unit.INSTANCE;
         });
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (!UtilPermission.checkPermission(requireContext())) {
+            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
             return;
         }
         cameraView.start();
@@ -106,7 +115,8 @@ public class CheckinFragment extends Fragment {
         binding.typeBusBesar.setOnClickListener(this::setupGroupButton);
         binding.btnTakePicture.setOnClickListener(v -> {
             try {
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (!UtilPermission.checkPermission(requireContext())) {
+                    new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
                     return;
                 }
                 cameraView.capture();
@@ -166,6 +176,8 @@ public class CheckinFragment extends Fragment {
                 .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
         balloon.showAtCenter(binding.getRoot());
+        balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
+        balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
         balloon.setOnBalloonDismissListener(() -> {
             if (parked != null) {
                 Bundle args = new Bundle();
@@ -241,23 +253,29 @@ public class CheckinFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED) {
-            cameraView.start();
+        if (!UtilPermission.checkPermission(requireContext())) {
+            new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+        } else {
+            try {
+                cameraView.start();
+            } catch (Exception ignored) {}
+
         }
     }
 
     @Override
     public void onPause() {
-        cameraView.stop();
+        try {
+            cameraView.stop();
+        } catch (Exception ignored) {}
         super.onPause();
     }
 
     @Override
     public void onDestroyView() {
-        cameraView.destroy();
+        try {
+            cameraView.destroy();
+        } catch (Exception ignored) {}
         super.onDestroyView();
     }
 }

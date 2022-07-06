@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.databinding.BluetoothItemBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilPermission;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,8 +62,7 @@ public class BluetoothDevicesAdapter extends RecyclerView.Adapter<BluetoothDevic
         try {
             BluetoothDevice bluetoothDevice = listDevice.get(position);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)
-                        != PackageManager.PERMISSION_GRANTED) {
+                if (!UtilPermission.checkPermission(context)) {
                     Objects
                             .requireNonNull(
                                     NavHostFragment

@@ -2,6 +2,7 @@ package com.mhandharbeni.e_parking.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -10,47 +11,103 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.mhandharbeni.e_parking.R;
+
 @SuppressLint("AppCompatCustomView")
-public class CustomImageView extends AppCompatImageView {
+public class CustomImageView extends ImageView {
 
-    public CustomImageView(@NonNull Context context) {
-        super(context);
+    // NOTE: These must be kept in sync with the AspectRatioImageView attributes in attrs.xml.
+    public static final int MEASUREMENT_WIDTH = 0;
+    public static final int MEASUREMENT_HEIGHT = 1;
+
+    private static final float DEFAULT_ASPECT_RATIO = 1f;
+    private static final boolean DEFAULT_ASPECT_RATIO_ENABLED = false;
+    private static final int DEFAULT_DOMINANT_MEASUREMENT = MEASUREMENT_WIDTH;
+
+    private float aspectRatio;
+    private boolean aspectRatioEnabled;
+    private int dominantMeasurement;
+
+    public CustomImageView(Context context) {
+        this(context, null);
     }
 
-    public CustomImageView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomImageView);
+        aspectRatio = a.getFloat(R.styleable.CustomImageView_customAspectRatio, DEFAULT_ASPECT_RATIO);
+        aspectRatioEnabled = a.getBoolean(R.styleable.CustomImageView_customAspectRatioEnabled,
+                DEFAULT_ASPECT_RATIO_ENABLED);
+        dominantMeasurement = a.getInt(R.styleable.CustomImageView_customDominantMeasurement,
+                DEFAULT_DOMINANT_MEASUREMENT);
+        a.recycle();
     }
 
-    public CustomImageView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (!aspectRatioEnabled) return;
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        Drawable drawable = getDrawable();
-        if (drawable != null)
-        {
-            //get imageview width
-            int width =  MeasureSpec.getSize(widthMeasureSpec);
+        int newWidth;
+        int newHeight;
+        switch (dominantMeasurement) {
+            case MEASUREMENT_WIDTH:
+                newWidth = getMeasuredWidth();
+                newHeight = (int) (newWidth * aspectRatio);
+                break;
 
+            case MEASUREMENT_HEIGHT:
+                newHeight = getMeasuredHeight();
+                newWidth = (int) (newHeight * aspectRatio);
+                break;
 
-            int diw = drawable.getIntrinsicWidth();
-            int dih = drawable.getIntrinsicHeight();
-            float ratio = (float)diw/dih; //get image aspect ratio
-
-            int height = (int) (width * ratio);
-
-            //don't let height exceed width
-            if (height > width){
-                height = width;
-            }
-
-
-            setMeasuredDimension(width, height);
+            default:
+                throw new IllegalStateException("Unknown measurement with ID " + dominantMeasurement);
         }
-        else
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        setMeasuredDimension(newWidth, newHeight);
+    }
+
+    /** Get the aspect ratio for this image view. */
+    public float getAspectRatio() {
+        return aspectRatio;
+    }
+
+    /** Set the aspect ratio for this image view. This will update the view instantly. */
+    public void setAspectRatio(float aspectRatio) {
+        this.aspectRatio = aspectRatio;
+        if (aspectRatioEnabled) {
+            requestLayout();
+        }
+    }
+
+    /** Get whether or not forcing the aspect ratio is enabled. */
+    public boolean getAspectRatioEnabled() {
+        return aspectRatioEnabled;
+    }
+
+    /** set whether or not forcing the aspect ratio is enabled. This will re-layout the view. */
+    public void setAspectRatioEnabled(boolean aspectRatioEnabled) {
+        this.aspectRatioEnabled = aspectRatioEnabled;
+        requestLayout();
+    }
+
+    /** Get the dominant measurement for the aspect ratio. */
+    public int getDominantMeasurement() {
+        return dominantMeasurement;
+    }
+
+    /**
+     * Set the dominant measurement for the aspect ratio.
+     *
+     * @see #MEASUREMENT_WIDTH
+     * @see #MEASUREMENT_HEIGHT
+     */
+    public void setDominantMeasurement(int dominantMeasurement) {
+        if (dominantMeasurement != MEASUREMENT_HEIGHT && dominantMeasurement != MEASUREMENT_WIDTH) {
+            throw new IllegalArgumentException("Invalid measurement type.");
+        }
+        this.dominantMeasurement = dominantMeasurement;
+        requestLayout();
     }
 }

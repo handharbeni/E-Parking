@@ -6,33 +6,47 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
-
-import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
-import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
-import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
-import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
+import android.view.Display;
+import android.view.View;
+import android.view.WindowManager;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.dantsu.escposprinter.EscPosPrinter;
+import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
+import com.dantsu.escposprinter.exceptions.EscPosBarcodeException;
+import com.dantsu.escposprinter.exceptions.EscPosConnectionException;
+import com.dantsu.escposprinter.exceptions.EscPosEncodingException;
+import com.dantsu.escposprinter.exceptions.EscPosParserException;
+import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.database.AppDb;
+import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.ActivityMainBinding;
 import com.mhandharbeni.e_parking.events.MessageEvent;
 import com.mhandharbeni.e_parking.fragments.BluetoothFragment;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.Util;
+import com.mhandharbeni.e_parking.utils.UtilDate;
+import com.mhandharbeni.e_parking.utils.UtilNav;
+import com.mhandharbeni.e_parking.utils.UtilPermission;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,8 +55,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
 public class MainActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback, BluetoothService.OnBluetoothScanCallback {
 
@@ -54,7 +72,10 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     private BluetoothService service;
     private AppDb appDb;
 
+    NavController navController;
+
     List<BluetoothDevice> listDevice = new ArrayList<>();
+    public static boolean bluetoothConnected = false;
 
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(
@@ -79,9 +100,44 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
         requestPermission();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController.addOnDestinationChangedListener(this::observeChild);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    }
+
+    void observeChild(NavController navController, NavDestination navDestination, Bundle arguments) {
+        new UtilNav<>()
+                .observeValue(
+                        navController,
+                        this,
+                        Constant.REQUEST_PERMISSION,
+                        o -> requestPermission());
+
+        new UtilNav<>()
+                .observeValue(
+                        navController,
+                        this,
+                        Constant.BLUETOOTH_SCAN_REQUEST,
+                        o -> checkBluetoothDevice());
+
+        new UtilNav<BluetoothDevice>()
+                .observeValue(
+                        navController,
+                        this,
+                        Constant.BLUETOOTH_CONNECT_REQUEST,
+                        o -> {
+                            try {
+                                service.connect(o);
+                            } catch (Exception ignored) {
+                            }
+                        });
+        new UtilNav<Parked>()
+                .observeValue(
+                        navController,
+                        this,
+                        Constant.BLUETOOTH_PRINT,
+                        this::print);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -123,6 +179,13 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         if (writeStoragePermission) {
             initDb();
         }
+
+//        if (readStoragePermission && writeStoragePermission && fineLocationPermission && coarseLocationPermission) {
+//            try {
+//                navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(),true);
+//                navController.navigate(navController.getCurrentDestination().getId());
+//            } catch (Exception ignored) {}
+//        }
     }
 
     void initDb() {
@@ -179,6 +242,63 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         initBluetooth();
     }
 
+    void print(Parked parked) {
+        EscPosPrinter printer;
+        try {
+            WindowManager manager = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = Math.min(width, height);
+            smallerDimension = smallerDimension * 3 / 4;
+
+            String inputValue = "";
+            inputValue += parked.getPlatNumber();
+            inputValue += ",_,";
+            inputValue += parked.getDate();
+
+            QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
+            qrgEncoder.setColorBlack(Color.BLACK);
+            qrgEncoder.setColorWhite(Color.WHITE);
+
+            Bitmap bitmap = qrgEncoder.getBitmap();
+
+            String vehicle = "Motor";
+            switch (parked.getType()) {
+                case 0 :
+                    vehicle = "Motor";
+                    break;
+                case 1 :
+                    vehicle = "Mobil";
+                    break;
+                case 2 :
+                    vehicle = "Bus Mini";
+                    break;
+                case 3 :
+                    vehicle = "Bus Besar";
+                    break;
+            }
+
+            printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
+            printer.printFormattedText(
+                    "[C]<b><font size='big'>" + getResources().getString(R.string.app_name) + "</font></b>\n" +
+                    "[C]<u><font size='normal'>" + getResources().getString(R.string.long_name) + "</font></u>\n" +
+                    "[C]================================\n" +
+                    "[L]" + getResources().getString(R.string.print_date) + "[R]"+ UtilDate.longToDate(parked.getDate(),"MM/dd/yyyy")+"\n" +
+                    "[L]" + getResources().getString(R.string.print_time_in) + "[R]"+ UtilDate.longToDate(parked.getCheckIn(),"HH:mm:ss")+"\n" +
+                    "[L]" + getResources().getString(R.string.print_vehicle) + "[R]"+vehicle+"\n" +
+                    "[L]" + getResources().getString(R.string.print_ticket_number) + "[R]"+parked.getTicketNumber()+"\n" +
+                    "[L]" + getResources().getString(R.string.print_platno) + "[R]"+parked.getPlatNumber()+"\n" +
+                    "[L]" + getResources().getString(R.string.print_price) + "[R]"+parked.getPrice()+"\n" +
+                    "[C]================================\n" +
+                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n"
+            );
+        } catch (EscPosConnectionException | EscPosEncodingException | EscPosBarcodeException | EscPosParserException ignored) {
+        }
+    }
+
     @Override
     public void onDataRead(byte[] buffer, int length) {
 
@@ -186,7 +306,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     @Override
     public void onStatusChange(BluetoothStatus status) {
-
+        if (status == BluetoothStatus.CONNECTED) {
+            bluetoothConnected = true;
+            navController.navigateUp();
+        } else if (status == BluetoothStatus.CONNECTING) {
+            bluetoothConnected = false;
+        } else if (status == BluetoothStatus.NONE) {
+            bluetoothConnected = false;
+        }
+        new UtilNav<Boolean>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED, bluetoothConnected);
+        new UtilNav<BluetoothStatus>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED_STRING, status);
     }
 
     @Override
@@ -206,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     @Override
     public void onDeviceDiscovered(BluetoothDevice device, int rssi) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+        if (!UtilPermission.checkPermission(getApplicationContext())) {
             requestPermission();
         }
 

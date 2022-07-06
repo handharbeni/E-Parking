@@ -19,8 +19,10 @@ public class Parked implements Serializable {
     long checkIn;
     long checkOut;
     String image;
+    int total;
+    int paidOptions;
+    boolean paid;
     boolean isSync;
-
 
 
     public Parked() {
@@ -96,6 +98,30 @@ public class Parked implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getPaidOptions() {
+        return paidOptions;
+    }
+
+    public void setPaidOptions(int paidOptions) {
+        this.paidOptions = paidOptions;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public boolean isSync() {

@@ -1,18 +1,27 @@
 package com.mhandharbeni.e_parking.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.gson.Gson;
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.database.AppDb;
+import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentMainBinding;
+import com.mhandharbeni.e_parking.utils.Constant;
+import com.mhandharbeni.e_parking.utils.UtilNav;
+import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -57,7 +66,22 @@ public class MainFragment extends Fragment {
     void setupTrigger() {
         binding.header.menu.setOnClickListener(this::showPopupMenu);
         binding.btnCheckin.setOnClickListener(
-                v -> navController.navigate(R.id.action_main_to_checkin));
+                v -> {
+                    if (!UtilPermission.checkPermission(requireContext())) {
+                        new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                    } else {
+                        navController.navigate(R.id.action_main_to_checkin);
+                    }
+                });
+        binding.btnCheckout.setOnClickListener(
+                v -> {
+                    if (!UtilPermission.checkPermission(requireContext())) {
+                        new UtilNav<>().setStateHandle(navController, Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                    } else {
+                        navController.navigate(R.id.action_main_to_checkout);
+                    }
+                }
+        );
     }
 
     void showPopupMenu(View view) {
