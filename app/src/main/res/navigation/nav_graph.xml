@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_main_to_checkout"
             app:destination="@id/CheckoutFragment"/>
+        <action
+            android:id="@+id/action_main_to_listparked"
+            app:destination="@id/ListParkedFragment"/>
     </fragment>
     <fragment
         android:id="@+id/BluetoothFragment"
@@ -117,5 +120,19 @@
             app:destination="@id/MainFragment"
             app:popUpTo="@id/PaymentOptionsFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/ListParkedFragment"
+        android:name="com.mhandharbeni.e_parking.fragments.ListParkedFragment"
+        android:label="List Parked"
+        tools:layout="@layout/fragment_list_parked">
+        <action
+            android:id="@+id/action_listparked_to_main"
+            app:destination="@id/MainFragment"
+            app:popUpTo="@id/ListParkedFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_listparked_to_detailpayment"
+            app:destination="@id/DetailPaymentFragment"/>
     </fragment>
 </navigation>

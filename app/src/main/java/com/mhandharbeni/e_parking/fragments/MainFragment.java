@@ -89,6 +89,15 @@ public class MainFragment extends BaseFragment {
                     }
                 }
         );
+        binding.btnDetail.setOnClickListener(
+                v -> {
+                    if (!UtilPermission.checkPermission(requireContext())) {
+                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                    } else {
+                        navigate(R.id.action_main_to_listparked);
+                    }
+                }
+        );
     }
 
     void showPopupMenu(View view) {
