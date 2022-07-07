@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,7 +22,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -43,6 +43,7 @@ import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.ActivityMainBinding;
+import com.mhandharbeni.e_parking.events.BluetoothEvent;
 import com.mhandharbeni.e_parking.events.MessageEvent;
 import com.mhandharbeni.e_parking.fragments.BluetoothFragment;
 import com.mhandharbeni.e_parking.utils.Constant;
@@ -50,7 +51,6 @@ import com.mhandharbeni.e_parking.utils.Util;
 import com.mhandharbeni.e_parking.utils.UtilDate;
 import com.mhandharbeni.e_parking.utils.UtilNav;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
-import com.skydoves.balloon.Balloon;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -141,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
                         this,
                         Constant.BLUETOOTH_PRINT,
                         this::print);
+        new UtilNav<>()
+                .observeValue(
+                        navController,
+                        this,
+                        Constant.BLUETOOTH_CONNECT_STATUS,
+                        o -> checkStatusBt());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -196,6 +202,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         }
     }
 
+    void checkStatusBt() {
+        try {
+            new UtilNav<Boolean>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED, service.getStatus() == BluetoothStatus.CONNECTED);
+        } catch (Exception ignored) {
+            new UtilNav<Boolean>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED, false);
+        }
+    }
+
     void initBluetooth() {
         config = new BluetoothConfiguration();
         config.context = getApplicationContext();
@@ -203,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
         config.bufferSize = 1024;
         config.characterDelimiter = '\n';
         config.deviceName = getResources().getString(R.string.app_name);
-        config.callListenersInMainThread = true;
+        config.callListenersInMainThread = false;
 
         config.uuid = UUID.fromString(Constant.UUID);
 
@@ -251,14 +265,19 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     public void onStatusChange(BluetoothStatus status) {
         if (status == BluetoothStatus.CONNECTED) {
             bluetoothConnected = true;
-            navController.navigateUp();
+            EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.CONNECTED));
         } else if (status == BluetoothStatus.CONNECTING) {
             bluetoothConnected = false;
+            EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.NONE));
         } else if (status == BluetoothStatus.NONE) {
             bluetoothConnected = false;
+            EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.NONE));
         }
-        new UtilNav<Boolean>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED, bluetoothConnected);
-        new UtilNav<BluetoothStatus>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED_STRING, status);
+
+        new Thread(() -> {
+            new UtilNav<Boolean>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED, bluetoothConnected);
+            new UtilNav<BluetoothStatus>().setStateHandle(navController, Constant.BLUETOOTH_CONNECTED_STRING, status);
+        });
     }
 
     @Override
@@ -364,16 +383,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
                 String vehicle = "Motor";
                 switch (parked.getType()) {
-                    case 0 :
+                    case 0:
                         vehicle = "Motor";
                         break;
-                    case 1 :
+                    case 1:
                         vehicle = "Mobil";
                         break;
-                    case 2 :
+                    case 2:
                         vehicle = "Bus Mini";
                         break;
-                    case 3 :
+                    case 3:
                         vehicle = "Bus Besar";
                         break;
                 }
@@ -385,12 +404,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
                                 "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_second) + "</font></u>\n" +
                                 "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_third) + "</font></u>\n" +
                                 "[C]================================\n" +
-                                "[L]" + context.getResources().getString(R.string.print_date) + "[R]"+ UtilDate.longToDate(parked.getDate(),"MM/dd/yyyy")+"\n" +
-                                "[L]" + context.getResources().getString(R.string.print_time_in) + "[R]"+ UtilDate.longToDate(parked.getCheckIn(),"HH:mm:ss")+"\n" +
-                                "[L]" + context.getResources().getString(R.string.print_vehicle) + "[R]"+vehicle+"\n" +
-                                "[L]" + context.getResources().getString(R.string.print_ticket_number) + "[R]"+parked.getTicketNumber()+"\n" +
-                                "[L]" + context.getResources().getString(R.string.print_platno) + "[R]"+parked.getPlatNumber()+"\n" +
-                                "[L]" + context.getResources().getString(R.string.print_price) + "[R]"+parked.getPrice()+"\n" +
+                                "[L]" + context.getResources().getString(R.string.print_date) + "[R]" + UtilDate.longToDate(parked.getDate(), "MM/dd/yyyy") + "\n" +
+                                "[L]" + context.getResources().getString(R.string.print_time_in) + "[R]" + UtilDate.longToDate(parked.getCheckIn(), "HH:mm:ss") + "\n" +
+                                "[L]" + context.getResources().getString(R.string.print_vehicle) + "[R]" + vehicle + "\n" +
+                                "[L]" + context.getResources().getString(R.string.print_ticket_number) + "[R]" + parked.getTicketNumber() + "\n" +
+                                "[L]" + context.getResources().getString(R.string.print_platno) + "[R]" + parked.getPlatNumber() + "\n" +
+                                "[L]" + context.getResources().getString(R.string.print_price) + "[R]" + parked.getPrice() + "\n" +
                                 "[C]================================\n" +
                                 "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n"
                 );

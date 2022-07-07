@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.priyankvasa.android.cameraviewex.CameraView;
 import com.priyankvasa.android.cameraviewex.Image;
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
@@ -55,6 +58,8 @@ public class CheckinFragment extends BaseFragment {
     private RequestManager glideManager;
     private final Matrix matrix = new Matrix();
     private Parked parked;
+
+    Balloon balloon;
 
     @Nullable
     @Override
@@ -110,7 +115,8 @@ public class CheckinFragment extends BaseFragment {
                     return;
                 }
                 cameraView.capture();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         });
         binding.btnRetake.setOnClickListener(v -> {
             cameraView.start();
@@ -122,39 +128,59 @@ public class CheckinFragment extends BaseFragment {
 
     @SuppressLint("NonConstantResourceId")
     void setupGroupButton(View view) {
-        int type = 0;
-        int price = 1000;
-        switch (view.getId()) {
-            case R.id.typeMotor:
-                break;
-            case R.id.typeMobil:
-                type = 1;
-                price = 5000;
-                break;
-            case R.id.typeBusMini:
-                type = 2;
-                price = 15000;
-                break;
-            case R.id.typeBusBesar:
-                type = 3;
-                price = 20000;
-                break;
+        String image = toBase64();
+        if (image != null) {
+            if (!binding.edtPlatNomor.getEditText().getText().toString().equalsIgnoreCase("")) {
+                int type = 0;
+                int price = 1000;
+                switch (view.getId()) {
+                    case R.id.typeMotor:
+                        break;
+                    case R.id.typeMobil:
+                        type = 1;
+                        price = 5000;
+                        break;
+                    case R.id.typeBusMini:
+                        type = 2;
+                        price = 15000;
+                        break;
+                    case R.id.typeBusBesar:
+                        type = 3;
+                        price = 20000;
+                        break;
+                }
+
+                parked = new Parked();
+                parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
+                parked.setTicketNumber(String.valueOf(System.currentTimeMillis()));
+                parked.setImage(image);
+                parked.setDate(System.currentTimeMillis());
+                parked.setCheckIn(System.currentTimeMillis());
+                parked.setCheckOut(0);
+                parked.setType(type);
+                parked.setSync(false);
+                parked.setPrice(price);
+
+                appDb.parked().insert(parked);
+
+                showSuccess();
+            } else {
+                showError(binding.edtPlatNomor, "Please Take a Picture first or fill it manually");
+            }
+        } else {
+            showError(binding.btnTakePicture, "Please Take a Picture first");
         }
 
-        parked = new Parked();
-        parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
-        parked.setTicketNumber(String.valueOf(System.currentTimeMillis()));
-        parked.setImage(toBase64());
-        parked.setDate(System.currentTimeMillis());
-        parked.setCheckIn(System.currentTimeMillis());
-        parked.setCheckOut(0);
-        parked.setType(type);
-        parked.setSync(false);
-        parked.setPrice(price);
+    }
 
-        appDb.parked().insert(parked);
 
-        Balloon balloon = new Balloon.Builder(requireContext())
+
+    public void showSuccess() {
+        if (balloon != null) {
+            balloon.dismiss();
+            balloon = null;
+        }
+        balloon = new Balloon.Builder(requireContext())
                 .setLayout(R.layout.popup_success)
                 .setIsVisibleArrow(false)
                 .setWidth(BalloonSizeSpec.WRAP)
@@ -210,17 +236,22 @@ public class CheckinFragment extends BaseFragment {
         Task<Text> result = recognizer
                 .process(image)
                 .addOnSuccessListener(text -> Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(text.getText()))
-                .addOnFailureListener(e -> {});
+                .addOnFailureListener(e -> {
+                });
     }
 
     private String toBase64() {
-        BitmapDrawable drawable = (BitmapDrawable) binding.imagePreview.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
+        try {
+            BitmapDrawable drawable = (BitmapDrawable) binding.imagePreview.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
-        byte[] bb = bos.toByteArray();
-        return Base64.encodeToString(bb, 0);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bb = bos.toByteArray();
+            return Base64.encodeToString(bb, 0);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     private Bitmap rotate(Bitmap bm, int rotation) {
@@ -248,7 +279,8 @@ public class CheckinFragment extends BaseFragment {
         } else {
             try {
                 cameraView.start();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
         }
     }
@@ -257,7 +289,8 @@ public class CheckinFragment extends BaseFragment {
     public void onPause() {
         try {
             cameraView.stop();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         super.onPause();
     }
 
@@ -265,7 +298,8 @@ public class CheckinFragment extends BaseFragment {
     public void onDestroyView() {
         try {
             cameraView.destroy();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         super.onDestroyView();
     }
 }

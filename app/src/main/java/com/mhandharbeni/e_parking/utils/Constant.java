@@ -16,6 +16,7 @@ public class Constant {
     public static final int REQUEST_CHECK_SETTINGS = 111;
     public static final String BLUETOOTH_SCAN_REQUEST = "BLUETOOTH_SCAN_REQUEST";
     public static final String BLUETOOTH_CONNECT_REQUEST = "BLUETOOTH_CONNECT_REQUEST";
+    public static final String BLUETOOTH_CONNECT_STATUS = "BLUETOOTH_CONNECT_STATUS";
     public static final String BLUETOOTH_PRINT = "BLUETOOTH_PRINT";
     public static final String BLUETOOTH_SEND_COMMAND = "BLUETOOTH_SEND_COMMAND";
     public static final String BLUETOOTH_DEVICE = "BLUETOOTH_DEVICE";

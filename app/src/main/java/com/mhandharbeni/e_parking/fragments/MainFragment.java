@@ -6,12 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
+import com.mhandharbeni.e_parking.MainActivity;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentMainBinding;
+import com.mhandharbeni.e_parking.events.BluetoothEvent;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilDate;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
@@ -20,6 +24,10 @@ import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainFragment extends BaseFragment {
 
@@ -43,6 +51,9 @@ public class MainFragment extends BaseFragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        observeMain();
+        checkStatus();
     }
 
     @Override
@@ -70,6 +81,24 @@ public class MainFragment extends BaseFragment {
         navController = NavHostFragment.findNavController(this);
     }
 
+    void observeMain() {
+        observe(Constant.BLUETOOTH_CONNECTED, (Observer<Boolean>) aBoolean -> {
+            binding.txtBtStatus.setText(
+                    String.format(
+                            "%s: %s",
+                            resources.getString(R.string.bluetooth_status),
+                            (aBoolean ?
+                                    resources.getString(R.string.bluetooth_status_connected)
+                                    : resources.getString(R.string.bluetooth_status_disconnected))
+                    )
+            );
+        });
+    }
+
+    void checkStatus() {
+        setState(Constant.BLUETOOTH_CONNECT_STATUS, MainFragment.class.getSimpleName());
+    }
+
     void setupTrigger() {
         binding.header.menu.setOnClickListener(this::showPopupMenu);
         binding.btnCheckin.setOnClickListener(
@@ -77,7 +106,11 @@ public class MainFragment extends BaseFragment {
                     if (!UtilPermission.checkPermission(requireContext())) {
                         setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
                     } else {
-                        navigate(R.id.action_main_to_checkin);
+                        if (!MainActivity.bluetoothConnected) {
+                            showError(binding.header.menu, "Please Connect to Bluetooh printer!");
+                        } else {
+                            navigate(R.id.action_main_to_checkin);
+                        }
                     }
                 });
         binding.btnCheckout.setOnClickListener(
@@ -122,7 +155,32 @@ public class MainFragment extends BaseFragment {
                 v -> navigate(R.id.action_main_to_login));
         balloon.getContentView().findViewById(R.id.btnAbout).setOnClickListener(v -> {
         });
-
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onConnect(BluetoothEvent bluetoothEvent) {
+        boolean status = bluetoothEvent.btStatus == BluetoothStatus.CONNECTED;
+        binding.txtBtStatus.setText(
+                String.format(
+                        "%s: %s",
+                        resources.getString(R.string.bluetooth_status),
+                        (status ?
+                                resources.getString(R.string.bluetooth_status_connected)
+                                : resources.getString(R.string.bluetooth_status_disconnected))
+                )
+        );
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

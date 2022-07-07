@@ -97,10 +97,7 @@ public class BluetoothFragment extends BaseFragment implements BluetoothDevicesA
             if (!UtilPermission.checkPermission(requireContext())) {
                 setState(Constant.REQUEST_PERMISSION, BluetoothFragment.this);
             }
-
-
         }
-
         setState(Constant.BLUETOOTH_CONNECT_REQUEST, device);
     }
 
@@ -108,15 +105,10 @@ public class BluetoothFragment extends BaseFragment implements BluetoothDevicesA
         setState(Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName());
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onConnect(BluetoothEvent bluetoothEvent) {
         if (bluetoothEvent.message == BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED) {
-            try {
-                if (bluetoothEvent.btStatus == BluetoothStatus.NONE) {
-                    bluetoothDevicesAdapter.refreshData();
-                }
-            } catch (Exception ignored) {
-            }
+            navController.navigateUp();
         }
     }
 
