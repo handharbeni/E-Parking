@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
             EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.CONNECTED));
         } else if (status == BluetoothStatus.CONNECTING) {
             bluetoothConnected = false;
-            EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.NONE));
+            EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.CONNECTING));
         } else if (status == BluetoothStatus.NONE) {
             bluetoothConnected = false;
             EventBus.getDefault().post(new BluetoothEvent(BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED, BluetoothStatus.NONE));

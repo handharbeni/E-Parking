@@ -156,7 +156,7 @@ public class MainFragment extends BaseFragment {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onConnect(BluetoothEvent bluetoothEvent) {
         boolean status = bluetoothEvent.btStatus == BluetoothStatus.CONNECTED;
         binding.txtBtStatus.setText(

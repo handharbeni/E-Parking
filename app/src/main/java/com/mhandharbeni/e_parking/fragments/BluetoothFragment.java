@@ -105,7 +105,7 @@ public class BluetoothFragment extends BaseFragment implements BluetoothDevicesA
         setState(Constant.BLUETOOTH_SCAN_REQUEST, BluetoothFragment.class.getSimpleName());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onConnect(BluetoothEvent bluetoothEvent) {
         if (bluetoothEvent.message == BluetoothEvent.BTEvent.BLUETOOTH_CONNECTED) {
             navController.navigateUp();
