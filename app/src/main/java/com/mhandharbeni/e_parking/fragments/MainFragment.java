@@ -82,17 +82,16 @@ public class MainFragment extends BaseFragment {
     }
 
     void observeMain() {
-        observe(Constant.BLUETOOTH_CONNECTED, (Observer<Boolean>) aBoolean -> {
-            binding.txtBtStatus.setText(
-                    String.format(
-                            "%s: %s",
-                            resources.getString(R.string.bluetooth_status),
-                            (aBoolean ?
-                                    resources.getString(R.string.bluetooth_status_connected)
-                                    : resources.getString(R.string.bluetooth_status_disconnected))
-                    )
-            );
-        });
+        observe(Constant.BLUETOOTH_CONNECTED, (Observer<Boolean>) aBoolean ->
+                binding.txtBtStatus.setText(
+                        String.format(
+                                "%s: %s",
+                                resources.getString(R.string.bluetooth_status),
+                                (aBoolean ?
+                                        resources.getString(R.string.bluetooth_status_connected)
+                                        : resources.getString(R.string.bluetooth_status_disconnected))
+                        )
+                ));
     }
 
     void checkStatus() {
