@@ -6,8 +6,8 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -35,8 +33,6 @@ import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilPermission;
 import com.priyankvasa.android.cameraviewex.CameraView;
 import com.priyankvasa.android.cameraviewex.Image;
-import com.skydoves.balloon.ArrowOrientation;
-import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
@@ -55,11 +51,8 @@ public class CheckinFragment extends BaseFragment {
     CameraView cameraView;
 
     private TextRecognizer recognizer;
-    private RequestManager glideManager;
     private final Matrix matrix = new Matrix();
     private Parked parked;
-
-    Balloon balloon;
 
     @Nullable
     @Override
@@ -84,7 +77,6 @@ public class CheckinFragment extends BaseFragment {
     }
 
     void setupLibs() {
-        glideManager = Glide.with(this);
         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
     }
 
@@ -100,7 +92,11 @@ public class CheckinFragment extends BaseFragment {
             setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
             return;
         }
-        cameraView.start();
+        new Handler().postDelayed(() -> {
+            try {
+                cameraView.start();
+            } catch (Exception ignored) {}
+        }, 1000);
     }
 
     void setupTrigger() {
@@ -151,7 +147,7 @@ public class CheckinFragment extends BaseFragment {
                 }
 
                 parked = new Parked();
-                parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
+                parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString().replaceAll(" ", "").toUpperCase());
                 parked.setTicketNumber(String.valueOf(System.currentTimeMillis()));
                 parked.setImage(image);
                 parked.setDate(System.currentTimeMillis());
@@ -172,7 +168,6 @@ public class CheckinFragment extends BaseFragment {
         }
 
     }
-
 
 
     public void showSuccess() {

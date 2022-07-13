@@ -3,6 +3,7 @@ package com.mhandharbeni.e_parking.fragments;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,10 +40,9 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
         binding = FragmentCheckoutBinding.inflate(inflater, container, false);
 
         navController = NavHostFragment.findNavController(this);
-
         binding.imageKendaraan.setDelegate(this);
-        binding.imageKendaraan.startCamera();
-        binding.imageKendaraan.startSpotAndShowRect();
+
+
         return binding.getRoot();
     }
 
@@ -50,6 +50,15 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupTrigger();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new Handler().postDelayed(() -> {
+            binding.imageKendaraan.startSpotAndShowRect();
+        }, 2000);
+        binding.imageKendaraan.startCamera();
     }
 
     @Override
@@ -120,6 +129,7 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
             }
         });
     }
+
     void showBaloonError() {
         if (balloon != null) {
             balloon.dismiss();

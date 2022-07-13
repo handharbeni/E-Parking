@@ -1,5 +1,7 @@
 package com.mhandharbeni.e_parking.cores;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
@@ -23,6 +27,8 @@ public class BaseFragment extends Fragment {
     public AppDb appDb;
     public Balloon balloon;
     public Resources resources;
+    public RequestManager glideManager;
+    public ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class BaseFragment extends Fragment {
 
         appDb = AppDb.getInstance(requireContext());
         resources = requireContext().getResources();
+        glideManager = Glide.with(this);
     }
 
     public <T> void observe(String key, Observer<T> observer) {
@@ -59,6 +66,25 @@ public class BaseFragment extends Fragment {
         try {
             navController.navigate(id, bundle);
         } catch (Exception ignored) {}
+    }
+
+    public void showLoading() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        progressDialog = new ProgressDialog(requireActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Tunggu Sebentar");
+        progressDialog.show();
+    }
+
+    public void doneLoading() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
     public void showError(View view, String message) {

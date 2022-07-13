@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -64,6 +63,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import io.reactivex.rxjava3.core.Observable;
 
 public class MainActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback, BluetoothService.OnBluetoothScanCallback {
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
     NavController navController;
 
     List<BluetoothDevice> listDevice = new ArrayList<>();
-    public static boolean bluetoothConnected = false;
+    public static boolean bluetoothConnected = true;
 
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(
@@ -400,18 +400,23 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
                 printer = new EscPosPrinter(BluetoothPrintersConnections.selectFirstPaired(), 203, 48f, 32);
                 printer.printFormattedText(
                         "[C]<b><font size='big'>" + context.getResources().getString(R.string.app_name) + "</font></b>\n" +
-                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_first) + "</font></u>\n" +
-                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_second) + "</font></u>\n" +
-                                "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_third) + "</font></u>\n" +
-                                "[C]================================\n" +
-                                "[L]" + context.getResources().getString(R.string.print_date) + "[R]" + UtilDate.longToDate(parked.getDate(), "MM/dd/yyyy") + "\n" +
-                                "[L]" + context.getResources().getString(R.string.print_time_in) + "[R]" + UtilDate.longToDate(parked.getCheckIn(), "HH:mm:ss") + "\n" +
-                                "[L]" + context.getResources().getString(R.string.print_vehicle) + "[R]" + vehicle + "\n" +
-                                "[L]" + context.getResources().getString(R.string.print_ticket_number) + "[R]" + parked.getTicketNumber() + "\n" +
-                                "[L]" + context.getResources().getString(R.string.print_platno) + "[R]" + parked.getPlatNumber() + "\n" +
-                                "[L]" + context.getResources().getString(R.string.print_price) + "[R]" + parked.getPrice() + "\n" +
-                                "[C]================================\n" +
-                                "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n"
+                        "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_first) + "</font></u>\n" +
+                        "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_second) + "</font></u>\n" +
+                        "[C]<u><font size='normal'>" + context.getResources().getString(R.string.long_name_third) + "</font></u>\n" +
+                        "[C]================================\n" +
+                        "[L]" + context.getResources().getString(R.string.print_date) + "[R]" + UtilDate.longToDate(parked.getDate(), "MM/dd/yyyy") + "\n" +
+                        "[L]" + context.getResources().getString(R.string.print_time_in) + "[R]" + UtilDate.longToDate(parked.getCheckIn(), "HH:mm:ss") + "\n" +
+                        "[L]" + context.getResources().getString(R.string.print_vehicle) + "[R]" + vehicle + "\n" +
+                        "[L]" + context.getResources().getString(R.string.print_ticket_number) + "[R]" + parked.getTicketNumber() + "\n" +
+                        "[L]" + context.getResources().getString(R.string.print_platno) + "[R]" + parked.getPlatNumber() + "\n" +
+                        "[L]" + context.getResources().getString(R.string.print_price) + "[R]" + parked.getPrice() + "\n" +
+                        "[C]================================\n" +
+                        "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(printer, bitmap) + "</img>\n" +
+                        "[C]================================\n" +
+                        "[C]\n" +
+                        "[C]\n" +
+                        "[C]\n" +
+                        "[C]\n"
                 );
             } catch (EscPosConnectionException | EscPosEncodingException | EscPosBarcodeException | EscPosParserException ignored) {
             }
