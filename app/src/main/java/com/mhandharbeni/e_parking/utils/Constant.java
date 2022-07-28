@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Constant {
+    public static final String BASE_URL = "http://66.96.229.251:84/API/e-parkir/v1/";
 //    public static final String UUID = "0b000001-0000-0001-1010-000000";
     public static final String UUID = "00001101-0000-1000-8000-00805F9B34FB";
     public static final String DB_NAME = "EParkDB";
@@ -40,6 +41,14 @@ public class Constant {
     public static int REQUEST_CODE = 0;
 
     public static String KEY_DETAIL_TIKET = "com.mhandharbeni.e_parking.fragments.DETAIL_TIKET";
+
+    public static final String TOKEN = "TOKEN";
+    public static final String ME = "ME";
+    public static final String PRICE = "PRICE";
+
+    public static final String CI_USERNAME = "USERNAME";
+    public static final String CI_PASSWORD = "PASSWORD";
+
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

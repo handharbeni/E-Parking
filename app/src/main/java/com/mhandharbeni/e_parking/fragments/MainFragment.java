@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.MainActivity;
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentMainBinding;
@@ -63,6 +64,12 @@ public class MainFragment extends BaseFragment {
     }
 
     void setupDb() {
+        try {
+            DataMe dataMe = gson.fromJson(utilDb.getString(Constant.ME), DataMe.class);
+            binding.user.edtUsername.setText(dataMe.getNamaLengkap());
+            binding.user.edtAddress.setText(dataMe.getAlamat());
+            binding.user.edtDinas.setText(dataMe.getLokasiParkir());
+        } catch (Exception ignored) {}
         appDb.parked().getLive(false, UtilDate.getNow()).observe(
                 getViewLifecycleOwner(),
                 parkeds -> {
@@ -151,7 +158,10 @@ public class MainFragment extends BaseFragment {
         balloon.getContentView().findViewById(R.id.btnBt).setOnClickListener(
                 v -> navigate(R.id.action_main_to_bt));
         balloon.getContentView().findViewById(R.id.btnLogout).setOnClickListener(
-                v -> navigate(R.id.action_main_to_login));
+                v -> {
+                    utilDb.putString(Constant.TOKEN, "");
+                    navigate(R.id.action_main_to_login);
+                });
         balloon.getContentView().findViewById(R.id.btnAbout).setOnClickListener(v -> {
         });
     }

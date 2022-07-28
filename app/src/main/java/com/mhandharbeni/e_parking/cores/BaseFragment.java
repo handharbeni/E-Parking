@@ -13,7 +13,12 @@ import androidx.navigation.NavController;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.gson.Gson;
+import com.mhandharbeni.e_parking.apis.Client;
+import com.mhandharbeni.e_parking.apis.ClientInterface;
 import com.mhandharbeni.e_parking.database.AppDb;
+import com.mhandharbeni.e_parking.fragments.LoginFragment;
+import com.mhandharbeni.e_parking.utils.UtilDb;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -23,20 +28,28 @@ import com.skydoves.balloon.BalloonSizeSpec;
 import java.util.Objects;
 
 public class BaseFragment extends Fragment {
+    public final String TAG = BaseFragment.class.getSimpleName();
     public NavController navController;
     public AppDb appDb;
+    public UtilDb utilDb;
     public Balloon balloon;
     public Resources resources;
     public RequestManager glideManager;
     public ProgressDialog progressDialog;
+    public Gson gson;
+
+    public ClientInterface clientInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        clientInterface = Client.getInstance(requireContext(), ClientInterface.class);
         appDb = AppDb.getInstance(requireContext());
+        utilDb = new UtilDb(requireContext());
         resources = requireContext().getResources();
         glideManager = Glide.with(this);
+        gson = new Gson();
     }
 
     public <T> void observe(String key, Observer<T> observer) {
