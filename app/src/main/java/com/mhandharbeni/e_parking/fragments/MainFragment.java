@@ -1,14 +1,23 @@
 package com.mhandharbeni.e_parking.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.mhandharbeni.e_parking.MainActivity;
 import com.mhandharbeni.e_parking.R;
@@ -66,9 +75,20 @@ public class MainFragment extends BaseFragment {
     void setupDb() {
         try {
             DataMe dataMe = gson.fromJson(utilDb.getString(Constant.ME), DataMe.class);
-            binding.user.edtUsername.setText(dataMe.getNamaLengkap());
-            binding.user.edtAddress.setText(dataMe.getAlamat());
-            binding.user.edtDinas.setText(dataMe.getLokasiParkir());
+            binding.user.edtUsername.setText(dataMe.getNamaLengkap().replaceAll("([\\r\\n])", "").trim());
+            binding.user.edtAddress.setText(dataMe.getAlamat().replaceAll("([\\r\\n])", "").trim());
+            binding.user.edtDinas.setText(dataMe.getLokasiParkir().replaceAll("([\\r\\n])", "").trim());
+
+            String[] namaLengkap = dataMe.getNamaLengkap().split(" ");
+            StringBuilder inisialNama = new StringBuilder(Constant.BASE_IMAGE);
+            for (String s : namaLengkap) {
+                inisialNama.append(s.charAt(0));
+            }
+            glideManager
+                    .load(inisialNama.toString())
+                    .placeholder(R.drawable.ic_account_box)
+                    .into(binding.user.profile);
+            Log.d(TAG, "setupDb: "+inisialNama);
         } catch (Exception ignored) {}
         appDb.parked().getLive(false, UtilDate.getNow()).observe(
                 getViewLifecycleOwner(),
