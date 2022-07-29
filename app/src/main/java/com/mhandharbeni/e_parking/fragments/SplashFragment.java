@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.Gson;
@@ -41,6 +42,7 @@ public class SplashFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!Objects.equals(utilDb.getString(Constant.TOKEN), "")) {
+            observe(Constant.FETCH_DATA, o -> navController.navigate(R.id.action_splash_to_main));
             fetchMe();
         } else {
             new CountDownTimer(3000, 1000) {
@@ -55,45 +57,5 @@ public class SplashFragment extends BaseFragment {
                 }
             }.start();
         }
-    }
-
-    void fetchMe() {
-        clientInterface.getMe().enqueue(new Callback<DataResponse<DataMe>>() {
-            @Override
-            public void onResponse(Call<DataResponse<DataMe>> call, Response<DataResponse<DataMe>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null && !response.body().isError()) {
-                        String json = gson.toJson(response.body().getData());
-                        utilDb.putString(Constant.ME, json);
-                    }
-                }
-                fetchPrice();
-            }
-
-            @Override
-            public void onFailure(Call<DataResponse<DataMe>> call, Throwable t) {
-                fetchPrice();
-            }
-        });
-    }
-
-    void fetchPrice() {
-        clientInterface.getPrice().enqueue(new Callback<DataResponse<DataPrice>>() {
-            @Override
-            public void onResponse(Call<DataResponse<DataPrice>> call, Response<DataResponse<DataPrice>> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null && !response.body().isError()) {
-                        String json = gson.toJson(response.body().getData());
-                        utilDb.putString(Constant.PRICE, json);
-                    }
-                }
-                navController.navigate(R.id.action_splash_to_main);
-            }
-
-            @Override
-            public void onFailure(Call<DataResponse<DataPrice>> call, Throwable t) {
-                navController.navigate(R.id.action_splash_to_main);
-            }
-        });
     }
 }

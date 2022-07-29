@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -13,11 +14,17 @@ import androidx.navigation.NavController;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.android.datatransport.runtime.dagger.Component;
 import com.google.gson.Gson;
+import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.apis.Client;
 import com.mhandharbeni.e_parking.apis.ClientInterface;
+import com.mhandharbeni.e_parking.apis.responses.DataResponse;
+import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
+import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.fragments.LoginFragment;
+import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilDb;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
@@ -26,6 +33,10 @@ import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaseFragment extends Fragment {
     public final String TAG = BaseFragment.class.getSimpleName();
@@ -125,4 +136,45 @@ public class BaseFragment extends Fragment {
         balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
         balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
     }
+
+    public void fetchMe() {
+        clientInterface.getMe().enqueue(new Callback<DataResponse<DataMe>>() {
+            @Override
+            public void onResponse(@NonNull Call<DataResponse<DataMe>> call, @NonNull Response<DataResponse<DataMe>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null && !response.body().isError()) {
+                        String json = gson.toJson(response.body().getData());
+                        utilDb.putString(Constant.ME, json);
+                    }
+                }
+                fetchPrice();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DataResponse<DataMe>> call, @NonNull Throwable t) {
+                fetchPrice();
+            }
+        });
+    }
+
+    public void fetchPrice() {
+        clientInterface.getPrice().enqueue(new Callback<DataResponse<DataPrice>>() {
+            @Override
+            public void onResponse(@NonNull Call<DataResponse<DataPrice>> call, @NonNull Response<DataResponse<DataPrice>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null && !response.body().isError()) {
+                        String json = gson.toJson(response.body().getData());
+                        utilDb.putString(Constant.PRICE, json);
+                    }
+                }
+                setState(Constant.FETCH_DATA, "DONE");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DataResponse<DataPrice>> call, @NonNull Throwable t) {
+                setState(Constant.FETCH_DATA, "DONE");
+            }
+        });
+    }
+
 }

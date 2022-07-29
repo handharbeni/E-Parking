@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -64,6 +65,7 @@ public class MainFragment extends BaseFragment {
 
         observeMain();
         checkStatus();
+        fetchMe();
     }
 
     @Override
@@ -72,7 +74,7 @@ public class MainFragment extends BaseFragment {
         binding = null;
     }
 
-    void setupDb() {
+    void setupData() {
         try {
             DataMe dataMe = gson.fromJson(utilDb.getString(Constant.ME), DataMe.class);
             binding.user.edtUsername.setText(dataMe.getNamaLengkap().replaceAll("([\\r\\n])", "").trim());
@@ -90,6 +92,10 @@ public class MainFragment extends BaseFragment {
                     .into(binding.user.profile);
             Log.d(TAG, "setupDb: "+inisialNama);
         } catch (Exception ignored) {}
+    }
+
+    void setupDb() {
+        setupData();
         appDb.parked().getLive(false, UtilDate.getNow()).observe(
                 getViewLifecycleOwner(),
                 parkeds -> {
@@ -109,6 +115,10 @@ public class MainFragment extends BaseFragment {
     }
 
     void observeMain() {
+        observe(Constant.FETCH_DATA, (Observer<String>) s -> {
+            setupData();
+            binding.swipeRefresh.setRefreshing(false);
+        });
         observe(Constant.BLUETOOTH_CONNECTED, (Observer<Boolean>) aBoolean ->
                 binding.txtBtStatus.setText(
                         String.format(
@@ -157,6 +167,7 @@ public class MainFragment extends BaseFragment {
                     }
                 }
         );
+        binding.swipeRefresh.setOnRefreshListener(this::fetchMe);
     }
 
     void showPopupMenu(View view) {

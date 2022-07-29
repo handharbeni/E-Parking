@@ -43,6 +43,8 @@ public class Constant {
 
     public static String KEY_DETAIL_TIKET = "com.mhandharbeni.e_parking.fragments.DETAIL_TIKET";
 
+    public static final String FETCH_DATA = "FETCH_DATA";
+
     public static final String TOKEN = "TOKEN";
     public static final String ME = "ME";
     public static final String PRICE = "PRICE";
