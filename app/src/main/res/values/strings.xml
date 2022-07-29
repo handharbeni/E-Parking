@@ -62,4 +62,6 @@
     <string name="bluetooth_status_connected">Connected</string>
     <string name="bluetooth_status_disconnected">Disconnected</string>
     <string name="databumi">Databumi</string>
+    <string name="cdIclogo">icLogo</string>
+    <string name="label_connect">Bluetooth Status: Connected</string>
 </resources>
