@@ -69,9 +69,7 @@ public class DetailTiketFragment extends BaseFragment {
     }
 
     void setupTrigger() {
-        binding.btnPrint.setOnClickListener(v -> {
-            setState(Constant.BLUETOOTH_PRINT, parked);
-        });
+        binding.btnPrint.setOnClickListener(v -> setState(Constant.BLUETOOTH_PRINT, parked));
         binding.btnDone.setOnClickListener(v -> navigate(R.id.action_detail_to_main));
     }
 

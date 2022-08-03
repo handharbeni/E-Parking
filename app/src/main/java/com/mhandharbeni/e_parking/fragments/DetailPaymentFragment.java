@@ -1,6 +1,7 @@
 package com.mhandharbeni.e_parking.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentDetailBayarBinding;
@@ -66,10 +68,13 @@ public class DetailPaymentFragment extends BaseFragment {
         binding.txtTimeOut.setText(UtilDate.longToDate(parked.getCheckOut(), "HH:mm:ss"));
         binding.txtDuration.setText("0");
         binding.txtTarif.setText(String.valueOf(parked.getPrice()));
-        binding.txtIdJukir.setText("JK-0012345");
-        binding.txtNamaJukir.setText("JUKIR DEV");
-        binding.txtLokasiJukir.setText("JL. Diponegoro - Indomart");
         binding.imagePreview.setImageBitmap(UtilImage.base64ToImage(parked.getImage()));
+
+        try {
+            binding.txtIdJukir.setText(getMe()!=null?getMe().getNpwrd().replaceAll("([\\r\\n])", "").trim():"");
+            binding.txtNamaJukir.setText(getMe()!=null?getMe().getNamaLengkap().replaceAll("([\\r\\n])", "").trim():"");
+            binding.txtLokasiJukir.setText(getMe()!=null?getMe().getLokasiParkir().replaceAll("([\\r\\n])", "").trim():"");
+        } catch (Exception ignored) {}
     }
 
     void setupTrigger() {
@@ -78,5 +83,6 @@ public class DetailPaymentFragment extends BaseFragment {
             args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
             navigate(R.id.action_detailpayment_to_paymentoptions, args);
         });
+        binding.btnPrintTiket.setOnClickListener(v -> setState(Constant.BLUETOOTH_PRINT, parked));
     }
 }

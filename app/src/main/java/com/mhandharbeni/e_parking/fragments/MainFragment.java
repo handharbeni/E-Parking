@@ -76,12 +76,11 @@ public class MainFragment extends BaseFragment {
 
     void setupData() {
         try {
-            DataMe dataMe = gson.fromJson(utilDb.getString(Constant.ME), DataMe.class);
-            binding.user.edtUsername.setText(dataMe.getNamaLengkap().replaceAll("([\\r\\n])", "").trim());
-            binding.user.edtAddress.setText(dataMe.getAlamat().replaceAll("([\\r\\n])", "").trim());
-            binding.user.edtDinas.setText(dataMe.getLokasiParkir().replaceAll("([\\r\\n])", "").trim());
+            binding.user.edtUsername.setText(getMe()!=null?getMe().getNamaLengkap().replaceAll("([\\r\\n])", "").trim():"-");
+            binding.user.edtAddress.setText(getMe()!=null?getMe().getAlamat().replaceAll("([\\r\\n])", "").trim():"-");
+            binding.user.edtDinas.setText(getMe()!=null?getMe().getLokasiParkir().replaceAll("([\\r\\n])", "").trim():"-");
 
-            String[] namaLengkap = dataMe.getNamaLengkap().split(" ");
+            String[] namaLengkap = getMe()!=null?getMe().getNamaLengkap().split(" "):"E,P".split(",");
             StringBuilder inisialNama = new StringBuilder(Constant.BASE_IMAGE);
             for (String s : namaLengkap) {
                 inisialNama.append(s.charAt(0));
@@ -90,7 +89,6 @@ public class MainFragment extends BaseFragment {
                     .load(inisialNama.toString())
                     .placeholder(R.drawable.ic_account_box)
                     .into(binding.user.profile);
-            Log.d(TAG, "setupDb: "+inisialNama);
         } catch (Exception ignored) {}
     }
 

@@ -26,6 +26,8 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
+import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckinBinding;
@@ -126,23 +128,24 @@ public class CheckinFragment extends BaseFragment {
     void setupGroupButton(View view) {
         String image = toBase64();
         if (image != null) {
+
             if (!binding.edtPlatNomor.getEditText().getText().toString().equalsIgnoreCase("")) {
                 int type = 0;
-                int price = 1000;
+                int price = getPrice() != null ? getPrice().getMotor() : 1000;
                 switch (view.getId()) {
                     case R.id.typeMotor:
                         break;
                     case R.id.typeMobil:
                         type = 1;
-                        price = 5000;
+                        price = getPrice() != null ? getPrice().getMobil() : 5000;
                         break;
                     case R.id.typeBusMini:
                         type = 2;
-                        price = 15000;
+                        price = getPrice() != null ? getPrice().getBusMini() : 10000;
                         break;
                     case R.id.typeBusBesar:
                         type = 3;
-                        price = 20000;
+                        price = getPrice() != null ? getPrice().getBusBesar() : 15000;
                         break;
                 }
 

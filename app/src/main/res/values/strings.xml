@@ -64,4 +64,5 @@
     <string name="databumi">Databumi</string>
     <string name="cdIclogo">icLogo</string>
     <string name="label_connect">Bluetooth Status: Connected</string>
+    <string name="print">CETAK</string>
 </resources>

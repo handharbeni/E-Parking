@@ -177,4 +177,19 @@ public class BaseFragment extends Fragment {
         });
     }
 
+    public DataMe getMe() {
+        try {
+            return gson.fromJson(utilDb.getString(Constant.ME), DataMe.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public DataPrice getPrice() {
+        try {
+            return gson.fromJson(utilDb.getString(Constant.PRICE), DataPrice.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
 }
