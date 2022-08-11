@@ -42,6 +42,7 @@ public class Constant {
     public static int REQUEST_CODE = 0;
 
     public static String KEY_DETAIL_TIKET = "com.mhandharbeni.e_parking.fragments.DETAIL_TIKET";
+    public static String KEY_DETAIL_QR = "com.mhandharbeni.e_parking.fragments.DETAIL_QR";
 
     public static final String FETCH_DATA = "FETCH_DATA";
 

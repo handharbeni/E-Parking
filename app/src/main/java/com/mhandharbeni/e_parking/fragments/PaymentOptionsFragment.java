@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.DataResponse;
+import com.mhandharbeni.e_parking.apis.responses.data.DataQr;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentPaymentOptionsBinding;
@@ -17,6 +19,10 @@ import com.mhandharbeni.e_parking.utils.Constant;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PaymentOptionsFragment extends BaseFragment {
     FragmentPaymentOptionsBinding binding;
@@ -47,19 +53,43 @@ public class PaymentOptionsFragment extends BaseFragment {
 
     void setupTrigger() {
         binding.btnCash.setOnClickListener(v -> {
-            parked.setDate(System.currentTimeMillis());
-            parked.setCheckOut(System.currentTimeMillis());
-            parked.setPaid(true);
-            parked.setPaidOptions(0);
-            appDb.parked().update(parked);
-            showBallonSuccess();
+//            parked.setDate(System.currentTimeMillis());
+//            parked.setCheckOut(System.currentTimeMillis());
+//            parked.setPaid(true);
+//            parked.setPaidOptions(0);
+//            appDb.parked().update(parked);
+//            showBallonSuccess();
+            showBalloonError();
         });
         binding.btnQris.setOnClickListener(v -> {
-            showBalloonError();
+            showLoading();
+            clientInterface.getQr(String.valueOf(parked.getPrice())).enqueue(new Callback<DataResponse<DataQr>>() {
+                @Override
+                public void onResponse(@NonNull Call<DataResponse<DataQr>> call, @NonNull Response<DataResponse<DataQr>> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (!response.body().isError()) {
+                                doneLoading();
+                                Bundle args = new Bundle();
+                                args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+                                args.putSerializable(Constant.KEY_DETAIL_QR, response.body().getData());
+                                navigate(R.id.action_options_to_detailqr, args);
+                            } else {
+                                showBalloonError();
+                                doneLoading();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<DataResponse<DataQr>> call, @NonNull Throwable t) {
+                    showBalloonError();
+                    doneLoading();
+                }
+            });
         });
-        binding.btnTapCash.setOnClickListener(v -> {
-            showBalloonError();
-        });
+        binding.btnTapCash.setOnClickListener(v -> showBalloonError());
     }
 
     void showBallonSuccess() {
@@ -81,9 +111,7 @@ public class PaymentOptionsFragment extends BaseFragment {
         balloon.showAlignBottom(binding.btnTapCash);
         balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
         balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
-        balloon.setOnBalloonDismissListener(() -> {
-            navigate(R.id.action_options_to_main);
-        });
+        balloon.setOnBalloonDismissListener(() -> navigate(R.id.action_options_to_main));
     }
 
     void showBalloonError() {

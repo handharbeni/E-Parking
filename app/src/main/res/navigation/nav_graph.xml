@@ -137,6 +137,9 @@
             app:destination="@id/MainFragment"
             app:popUpTo="@id/PaymentOptionsFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_options_to_detailqr"
+            app:destination="@id/DetailQRPayment"/>
     </fragment>
     <fragment
         android:id="@+id/ListParkedFragment"
@@ -151,5 +154,12 @@
         <action
             android:id="@+id/action_listparked_to_detailpayment"
             app:destination="@id/DetailPaymentFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DetailQRPayment"
+        android:name="com.mhandharbeni.e_parking.fragments.DetailPaymentQR"
+        android:label="QR Screen"
+        tools:layout="@layout/fragment_detail_payment_qr">
+
     </fragment>
 </navigation>

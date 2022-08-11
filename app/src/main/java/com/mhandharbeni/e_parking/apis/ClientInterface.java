@@ -4,6 +4,7 @@ import com.mhandharbeni.e_parking.apis.responses.DataResponse;
 import com.mhandharbeni.e_parking.apis.responses.data.DataLogin;
 import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
+import com.mhandharbeni.e_parking.apis.responses.data.DataQr;
 import com.mhandharbeni.e_parking.utils.Constant;
 
 import retrofit2.Call;
@@ -11,6 +12,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ClientInterface {
     @FormUrlEncoded
@@ -25,4 +27,7 @@ public interface ClientInterface {
 
     @GET("getPrice.php")
     Call<DataResponse<DataPrice>> getPrice();
+
+    @GET("getQr.php")
+    Call<DataResponse<DataQr>> getQr(@Query("amount") String amount);
 }
