@@ -5,6 +5,7 @@ import com.mhandharbeni.e_parking.apis.responses.data.DataLogin;
 import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
 import com.mhandharbeni.e_parking.apis.responses.data.DataQr;
+import com.mhandharbeni.e_parking.apis.responses.data.DataStatus;
 import com.mhandharbeni.e_parking.utils.Constant;
 
 import retrofit2.Call;
@@ -29,5 +30,13 @@ public interface ClientInterface {
     Call<DataResponse<DataPrice>> getPrice();
 
     @GET("getQr.php")
-    Call<DataResponse<DataQr>> getQr(@Query("amount") String amount);
+    Call<DataResponse<DataQr>> getQr(
+            @Query("amount") String amount,
+            @Query("billNumber") String billNumber
+    );
+
+    @GET("checkStatusPayment.php")
+    Call<DataResponse<DataStatus>> getStatusPayment(
+            @Query("billNumber") String billNumber
+    );
 }

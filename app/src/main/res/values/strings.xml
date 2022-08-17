@@ -66,4 +66,8 @@
     <string name="label_connect">Bluetooth Status: Connected</string>
     <string name="print">CETAK</string>
     <string name="scan_qr_here">Scan QR Here</string>
+    <string name="check_payment">Check Payment</string>
+    <string name="status_payment">Status Payment :</string>
+    <string name="unpaid">UNPAID</string>
+    <string name="paid">PAID</string>
 </resources>

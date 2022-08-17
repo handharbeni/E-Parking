@@ -13,6 +13,7 @@ public class Parked implements Serializable {
 
     String platNumber;
     String ticketNumber;
+    String billNumber;
     int price;
     int type;
     long date;
@@ -50,6 +51,14 @@ public class Parked implements Serializable {
 
     public void setTicketNumber(String ticket) {
         this.ticketNumber = ticket;
+    }
+
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
     }
 
     public int getPrice() {

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.apis.responses.DataResponse;
+import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.apis.responses.data.DataQr;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
@@ -63,13 +64,20 @@ public class PaymentOptionsFragment extends BaseFragment {
         });
         binding.btnQris.setOnClickListener(v -> {
             showLoading();
-            clientInterface.getQr(String.valueOf(parked.getPrice())).enqueue(new Callback<DataResponse<DataQr>>() {
+            DataMe me = getMe();
+            String idUser = me.getJenis()+""+me.getGolongan()+""+me.getThnRegister()+""+me.getKecamatan()+""+me.getNpwrd();
+            String millis = String.valueOf(System.currentTimeMillis());
+            // TODO CHANGE THE PRICE TO String.valueOf(parked.getPrice())
+            clientInterface.getQr(String.valueOf(parked.getPrice()), idUser+""+millis).enqueue(new Callback<DataResponse<DataQr>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataQr>> call, @NonNull Response<DataResponse<DataQr>> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             if (!response.body().isError()) {
                                 doneLoading();
+                                parked.setBillNumber(idUser+""+millis);
+                                appDb.parked().update(parked);
+
                                 Bundle args = new Bundle();
                                 args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                                 args.putSerializable(Constant.KEY_DETAIL_QR, response.body().getData());
