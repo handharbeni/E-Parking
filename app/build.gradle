@@ -11,7 +11,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        archivesBaseName = "EPark-version_${versionName}-build_${versionCode}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -28,11 +28,19 @@ android {
     buildFeatures {
         viewBinding true
     }
+    signingConfigs {
+        config {
+            keyAlias 'keyRelease'
+            keyPassword 'E_PARK12345678'
+            storeFile file('e-parking.jks')
+            storePassword 'E_PARK12345678'
+        }
+    }
 }
 
 dependencies {
     implementation 'androidx.asynclayoutinflater:asynclayoutinflater:1.0.0'
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
     def eventbus_version = "3.3.1"
     def autovalue_version = "1.9"
 
@@ -45,7 +53,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.google.android.material:material:1.6.1'
 
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.1'
     implementation 'androidx.navigation:navigation-ui:2.5.1'
@@ -53,7 +61,7 @@ dependencies {
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
     implementation 'com.google.code.gson:gson:2.9.0'
@@ -76,7 +84,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.0'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.1'
 
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.google.zxing:core:3.4.0'
