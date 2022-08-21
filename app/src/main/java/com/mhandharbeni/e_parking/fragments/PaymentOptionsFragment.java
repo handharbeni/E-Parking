@@ -68,7 +68,8 @@ public class PaymentOptionsFragment extends BaseFragment {
             String idUser = me.getJenis()+""+me.getGolongan()+""+me.getThnRegister()+""+me.getKecamatan()+""+me.getNpwrd();
             String millis = String.valueOf(System.currentTimeMillis());
             // TODO CHANGE THE PRICE TO String.valueOf(parked.getPrice())
-            clientInterface.getQr(String.valueOf(parked.getPrice()), idUser+""+millis).enqueue(new Callback<DataResponse<DataQr>>() {
+            String price = String.valueOf(parked.getPrice());
+            clientInterface.getQr(price, idUser+""+millis).enqueue(new Callback<DataResponse<DataQr>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataQr>> call, @NonNull Response<DataResponse<DataQr>> response) {
                     if (response.isSuccessful()) {
@@ -76,6 +77,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                             if (!response.body().isError()) {
                                 doneLoading();
                                 parked.setBillNumber(idUser+""+millis);
+                                parked.setDataQr(response.body().getData().getQrValue());
                                 appDb.parked().update(parked);
 
                                 Bundle args = new Bundle();

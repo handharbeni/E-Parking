@@ -22,6 +22,7 @@ public class Parked implements Serializable {
     String image;
     int total;
     int paidOptions;
+    String dataQr;
     boolean paid;
     boolean isSync;
 
@@ -123,6 +124,14 @@ public class Parked implements Serializable {
 
     public void setPaidOptions(int paidOptions) {
         this.paidOptions = paidOptions;
+    }
+
+    public String getDataQr() {
+        return dataQr;
+    }
+
+    public void setDataQr(String dataQr) {
+        this.dataQr = dataQr;
     }
 
     public boolean isPaid() {
