@@ -168,13 +168,14 @@ public class DetailPaymentQR extends BaseFragment {
                 .setIsVisibleArrow(false)
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setHeight(BalloonSizeSpec.WRAP)
+                .setPadding(20)
                 .setTextSize(15f)
                 .setCornerRadius(4f)
                 .setAlpha(0.9f)
                 .setBalloonAnimation(BalloonAnimation.ELASTIC)
                 .setLifecycleOwner(getViewLifecycleOwner())
                 .build();
-        balloon.showAlignBottom(binding.labelQris);
+        balloon.showAlignBottom(binding.logoQris);
         balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
         balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
     }

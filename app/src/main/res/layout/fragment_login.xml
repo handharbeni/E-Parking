@@ -17,6 +17,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/imgLogo"
+            android:src="@drawable/logo_kota_batu"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/cdIclogo" />
+
+        <TextView
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:text="@string/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <com.google.android.material.textfield.TextInputLayout
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
@@ -74,4 +93,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.textview.MaterialTextView
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        app:lineHeight="10dp"
+        android:lineHeight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/databumi"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:targetApi="p" />
 </androidx.constraintlayout.widget.ConstraintLayout>

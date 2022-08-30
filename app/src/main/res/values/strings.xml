@@ -61,7 +61,7 @@
     <string name="bluetooth_status">Bluetooth Status</string>
     <string name="bluetooth_status_connected">Connected</string>
     <string name="bluetooth_status_disconnected">Disconnected</string>
-    <string name="databumi">Databumi</string>
+    <string name="databumi">Copyright©Databumi.id</string>
     <string name="cdIclogo">icLogo</string>
     <string name="label_connect">Bluetooth Status: Connected</string>
     <string name="print">CETAK</string>
@@ -70,4 +70,5 @@
     <string name="status_payment">Status Payment :</string>
     <string name="unpaid">UNPAID</string>
     <string name="paid">PAID</string>
+    <string name="logo_qris">Logo Qris</string>
 </resources>

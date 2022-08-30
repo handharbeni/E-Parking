@@ -85,7 +85,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                                 args.putSerializable(Constant.KEY_DETAIL_QR, response.body().getData());
                                 navigate(R.id.action_options_to_detailqr, args);
                             } else {
-                                showBalloonError();
+                                showBalloonError(response.body().getMessage());
                                 doneLoading();
                             }
                         }
@@ -94,7 +94,7 @@ public class PaymentOptionsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NonNull Call<DataResponse<DataQr>> call, @NonNull Throwable t) {
-                    showBalloonError();
+                    showBalloonError("Something went wrong, please try again!");
                     doneLoading();
                 }
             });
@@ -134,6 +134,29 @@ public class PaymentOptionsFragment extends BaseFragment {
                 .setIsVisibleArrow(false)
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setHeight(BalloonSizeSpec.WRAP)
+                .setTextSize(15f)
+                .setCornerRadius(4f)
+                .setAlpha(0.9f)
+                .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                .setLifecycleOwner(getViewLifecycleOwner())
+                .build();
+
+        balloon.showAlignBottom(binding.btnTapCash);
+        balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
+        balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
+    }
+
+    void showBalloonError(String message) {
+        if (balloon != null) {
+            balloon.dismiss();
+            balloon = null;
+        }
+        balloon = new Balloon.Builder(requireContext())
+                .setText(message)
+                .setIsVisibleArrow(false)
+                .setWidth(BalloonSizeSpec.WRAP)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setPadding(20)
                 .setTextSize(15f)
                 .setCornerRadius(4f)
                 .setAlpha(0.9f)

@@ -12,7 +12,7 @@ public class Constant {
 //    public static final String UUID = "0b000001-0000-0001-1010-000000";
     public static final String UUID = "00001101-0000-1000-8000-00805F9B34FB";
     public static final String DB_NAME = "EParkDB";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
     public static final boolean DB_EXPORT = false;
     public static final int RC_PERMISSION = 123;
     public static final int REQUEST_CHECK_SETTINGS = 111;
