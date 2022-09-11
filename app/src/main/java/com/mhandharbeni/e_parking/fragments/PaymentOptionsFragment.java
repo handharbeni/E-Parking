@@ -68,7 +68,8 @@ public class PaymentOptionsFragment extends BaseFragment {
             String idUser = me.getJenis()+""+me.getGolongan()+""+me.getThnRegister()+""+me.getKecamatan()+""+me.getNpwrd();
             String millis = String.valueOf(System.currentTimeMillis());
             // TODO CHANGE THE PRICE TO String.valueOf(parked.getPrice())
-            String price = String.valueOf(parked.getPrice());
+//            String price = String.valueOf(parked.getPrice());
+            String price = "1";
             clientInterface.getQr(price, idUser+""+millis).enqueue(new Callback<DataResponse<DataQr>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataQr>> call, @NonNull Response<DataResponse<DataQr>> response) {

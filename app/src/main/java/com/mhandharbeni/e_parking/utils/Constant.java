@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Constant {
-    public static final String BASE_URL = "https://e-parkir.batukota.go.id/android/e-parkir/v1/";
+//    public static final String BASE_URL = "https://e-parkir.batukota.go.id/android/e-parkir/v1/";
+    public static final String BASE_URL = "http://66.96.229.251:84/API/e-parkir/v1/";
     public static final String BASE_IMAGE = "https://via.placeholder.com/100.png?text=";
 //    public static final String UUID = "0b000001-0000-0001-1010-000000";
     public static final String UUID = "00001101-0000-1000-8000-00805F9B34FB";

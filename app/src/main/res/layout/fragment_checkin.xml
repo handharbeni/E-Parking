@@ -140,7 +140,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_margin="5dp"
                     android:id="@+id/typeMotor"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/motorcycle_smaller"
                     android:layout_weight="0.5"
                     android:text="@string/motor"
                     android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_margin="5dp"
                     android:id="@+id/typeMobil"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/car_smaller"
                     android:layout_weight="0.5"
                     android:text="@string/mobil"
                     android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_margin="5dp"
                     android:id="@+id/typeBusMini"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/minibus_smaller"
                     android:layout_weight="0.5"
                     android:text="@string/bus_mini"
                     android:layout_width="match_parent"
@@ -169,7 +169,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_margin="5dp"
                     android:id="@+id/typeBusBesar"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/bus_smaller"
                     android:layout_weight="0.5"
                     android:text="@string/bus_besar"
                     android:layout_width="match_parent"
