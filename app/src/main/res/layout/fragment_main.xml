@@ -118,22 +118,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
+                    android:drawableTop="@drawable/enter_smaller"
                     android:id="@+id/btnCheckin"
                     android:minHeight="55dp"
-                    android:drawableStart="@drawable/ic_checkin"
                     android:textColor="@color/white"
                     android:text="@string/parkir_masuk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.button.MaterialButton
+                    android:drawableTop="@drawable/exit_smaller"
                     android:id="@+id/btnCheckout"
                     android:minHeight="55dp"
-                    android:drawableStart="@drawable/ic_checkin"
                     android:textColor="@color/white"
                     android:text="@string/parkir_keluar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.button.MaterialButton
+                    android:visibility="gone"
                     android:id="@+id/btnDetail"
                     android:minHeight="55dp"
                     android:drawableStart="@drawable/ic_detail"

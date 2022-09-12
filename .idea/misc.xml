@@ -7,6 +7,9 @@
         <entry key="app/src/main/res/drawable-v23/motorcycle_smaller.xml" value="0.169" />
         <entry key="app/src/main/res/drawable/bus_smaller.xml" value="0.169" />
         <entry key="app/src/main/res/drawable/car_smaller.xml" value="0.169" />
+        <entry key="app/src/main/res/drawable/cash_smaller.xml" value="0.169" />
+        <entry key="app/src/main/res/drawable/enter_smaller.xml" value="0.169" />
+        <entry key="app/src/main/res/drawable/exit_smaller.xml" value="0.169" />
         <entry key="app/src/main/res/drawable/ic_bluetooth_connected.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_bluetooth_disconnect.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_check_success.xml" value="0.167" />
@@ -15,6 +18,8 @@
         <entry key="app/src/main/res/drawable/ic_logo_qris.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/minibus_smaller.xml" value="0.169" />
         <entry key="app/src/main/res/drawable/motorcycle_smaller.xml" value="0.169" />
+        <entry key="app/src/main/res/drawable/qris_smaller.xml" value="0.169" />
+        <entry key="app/src/main/res/drawable/tapcash_smaller.xml" value="0.169" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bluetooth_item.xml" value="0.11666666666666667" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2" />

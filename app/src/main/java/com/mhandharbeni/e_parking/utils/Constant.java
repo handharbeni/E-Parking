@@ -50,10 +50,25 @@ public class Constant {
     public static final String TOKEN = "TOKEN";
     public static final String ME = "ME";
     public static final String PRICE = "PRICE";
+    public static final String STATS = "STATS";
 
     public static final String CI_USERNAME = "USERNAME";
     public static final String CI_PASSWORD = "PASSWORD";
 
+    public static final String CI_PLATNUMBER = "platNumber";
+    public static final String CI_TICKETNUMBER = "ticketNumber";
+    public static final String CI_BILLNUMBER = "billNumber";
+    public static final String CI_PRICE = "price";
+    public static final String CI_TYPE = "type";
+    public static final String CI_DATE = "date";
+    public static final String CI_CHECKIN = "checkin";
+    public static final String CI_CHECKOUT = "checkout";
+    public static final String CI_IMAGE = "image";
+    public static final String CI_TOTAL = "total";
+    public static final String CI_PAIDOPTIONS = "paidOptions";
+    public static final String CI_DATAQR = "dataQr";
+    public static final String CI_PAID = "paid";
+    public static final String CI_ISSYNC = "isSync";
 
     static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

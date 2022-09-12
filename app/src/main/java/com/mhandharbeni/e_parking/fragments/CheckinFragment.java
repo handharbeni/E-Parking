@@ -26,7 +26,9 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.DataResponse;
 import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
+import com.mhandharbeni.e_parking.apis.responses.data.DataParkirMasuk;
 import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
@@ -45,6 +47,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import kotlin.Unit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckinFragment extends BaseFragment {
     private final String TAG = CheckinFragment.class.getSimpleName();
@@ -126,10 +131,11 @@ public class CheckinFragment extends BaseFragment {
 
     @SuppressLint("NonConstantResourceId")
     void setupGroupButton(View view) {
+        showLoading();
         String image = toBase64();
         if (image != null) {
 
-            if (!binding.edtPlatNomor.getEditText().getText().toString().equalsIgnoreCase("")) {
+            if (!Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString().equalsIgnoreCase("")) {
                 int type = 0;
                 int price = getPrice() != null ? getPrice().getMotor() : 1000;
                 switch (view.getId()) {
@@ -148,10 +154,14 @@ public class CheckinFragment extends BaseFragment {
                         price = getPrice() != null ? getPrice().getBusBesar() : 15000;
                         break;
                 }
+                DataMe me = getMe();
+                String idUser = me.getJenis()+""+me.getGolongan()+""+me.getThnRegister()+""+me.getKecamatan()+""+me.getNpwrd();
+                String millis = String.valueOf(System.currentTimeMillis());
 
                 parked = new Parked();
                 parked.setPlatNumber(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString().replaceAll(" ", "").toUpperCase());
                 parked.setTicketNumber(String.valueOf(System.currentTimeMillis()));
+                parked.setBillNumber(idUser+""+millis);
                 parked.setImage(image);
                 parked.setDate(System.currentTimeMillis());
                 parked.setCheckIn(System.currentTimeMillis());
@@ -160,9 +170,33 @@ public class CheckinFragment extends BaseFragment {
                 parked.setSync(false);
                 parked.setPrice(price);
 
-                appDb.parked().insert(parked);
+                clientInterface.parkirMasuk(
+                        parked.getPlatNumber(),
+                        parked.getTicketNumber(),
+                        parked.getBillNumber(),
+                        String.valueOf(parked.getPrice()),
+                        String.valueOf(parked.getType()),
+                        String.valueOf(parked.getDate()),
+                        String.valueOf(parked.getCheckIn()),
+                        "0",
+                        String.valueOf(parked.getImage()),
+                        String.valueOf(parked.getTotal()),
+                        String.valueOf(parked.getPaidOptions()),
+                        "",
+                        "0",
+                        "1"
+                ).enqueue(new Callback<DataResponse<DataParkirMasuk>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<DataResponse<DataParkirMasuk>> call, @NonNull Response<DataResponse<DataParkirMasuk>> response) {
+                        doneLoading();
+                        showSuccess();
+                    }
 
-                showSuccess();
+                    @Override
+                    public void onFailure(@NonNull Call<DataResponse<DataParkirMasuk>> call, @NonNull Throwable t) {
+                        doneLoading();
+                    }
+                });
             } else {
                 showError(binding.edtPlatNomor, "Please Take a Picture first or fill it manually");
             }
@@ -233,7 +267,11 @@ public class CheckinFragment extends BaseFragment {
         InputImage image = InputImage.fromBitmap(bitmap, 0);
         Task<Text> result = recognizer
                 .process(image)
-                .addOnSuccessListener(text -> Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(text.getText()))
+                .addOnSuccessListener(text -> {
+                    if (Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString().isEmpty()) {
+                        Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(text.getText());
+                    }
+                })
                 .addOnFailureListener(e -> {
                 });
     }

@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.mhandharbeni.e_parking.R;
+import com.mhandharbeni.e_parking.apis.responses.DataResponse;
+import com.mhandharbeni.e_parking.apis.responses.data.DataKendaraan;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.FragmentCheckoutBinding;
@@ -25,6 +27,9 @@ import com.skydoves.balloon.BalloonSizeSpec;
 import java.util.Objects;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegate {
     private final String TAG = CheckoutFragment.class.getSimpleName();
@@ -55,32 +60,73 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
     @Override
     public void onStart() {
         super.onStart();
-        new Handler().postDelayed(() -> {
-            binding.imageKendaraan.startSpotAndShowRect();
-        }, 2000);
+        new Handler().postDelayed(() -> binding.imageKendaraan.startSpotAndShowRect(), 2000);
         binding.imageKendaraan.startCamera();
     }
 
     @Override
     public void onScanQRCodeSuccess(String result) {
+        binding.imageKendaraan.stopSpot();
+
+        showLoading();
         vibrate();
         try {
             String[] aResult = result.split(",_,");
             String platNo = aResult[0];
             String date = aResult[1];
             Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(aResult[0]);
-            parked = appDb.parked().getParked(platNo, Long.parseLong(date));
-            if (parked != null) {
-                Bundle args = new Bundle();
-                args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
-                navigate(R.id.action_checkout_to_detailpayment, args);
-            } else {
-                showBaloonError();
-            }
+
+            clientInterface.getKendaraanByPlatNumber(platNo).enqueue(new Callback<DataResponse<DataKendaraan>>() {
+                @Override
+                public void onResponse(@NonNull Call<DataResponse<DataKendaraan>> call, @NonNull Response<DataResponse<DataKendaraan>> response) {
+                    doneLoading();
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (!response.body().isError()) {
+                                if (response.body().getData() != null) {
+                                    DataKendaraan dataKendaraan = response.body().getData();
+
+                                    Bundle args = new Bundle();
+                                    parked = new Parked();
+                                    parked.setPlatNumber(dataKendaraan.getPlatNumber());
+                                    parked.setTicketNumber(dataKendaraan.getTicketNumber());
+                                    parked.setBillNumber(dataKendaraan.getBillNumber());
+                                    parked.setPrice(dataKendaraan.getPrice());
+                                    parked.setType(dataKendaraan.getType());
+                                    parked.setDate(Long.parseLong(dataKendaraan.getDate()));
+                                    parked.setCheckIn(Long.parseLong(dataKendaraan.getCheckin()));
+                                    parked.setCheckOut(Long.parseLong(dataKendaraan.getCheckout()));
+                                    parked.setImage(dataKendaraan.getImage());
+                                    parked.setTotal(dataKendaraan.getTotal());
+                                    parked.setPaidOptions(dataKendaraan.getPaidOptions());
+                                    parked.setDataQr(dataKendaraan.getDataQr());
+                                    parked.setPaid(dataKendaraan.getPaid()==0);
+                                    parked.setSync(dataKendaraan.getIsSync()==0);
+
+                                    args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
+                                    navigate(R.id.action_checkout_to_detailpayment, args);
+                                } else {
+                                    showBaloonError();
+                                }
+                            } else {
+                                showBaloonError();
+                            }
+                        }
+                    } else {
+                        showBaloonError();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<DataResponse<DataKendaraan>> call, @NonNull Throwable t) {
+                    doneLoading();
+                    showBaloonError();
+                }
+            });
         } catch (Exception ignored) {
             showBaloonError();
         } finally {
-            binding.imageKendaraan.startSpot();
+            new Handler().postDelayed(() -> binding.imageKendaraan.startSpotAndShowRect(), 2000);
         }
     }
 
@@ -118,7 +164,7 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
                 args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                 navigate(R.id.action_checkout_to_detailpayment, args);
             } else {
-                parked = appDb.parked().getParked(binding.edtPlatNomor.getEditText().getText().toString());
+                parked = appDb.parked().getParked(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
                 if (parked != null) {
                     Bundle args = new Bundle();
                     args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);

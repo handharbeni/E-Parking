@@ -22,6 +22,7 @@ import com.mhandharbeni.e_parking.apis.ClientInterface;
 import com.mhandharbeni.e_parking.apis.responses.DataResponse;
 import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
+import com.mhandharbeni.e_parking.apis.responses.data.DataStats;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.fragments.LoginFragment;
 import com.mhandharbeni.e_parking.utils.Constant;
@@ -167,11 +168,31 @@ public class BaseFragment extends Fragment {
                         utilDb.putString(Constant.PRICE, json);
                     }
                 }
-                setState(Constant.FETCH_DATA, "DONE");
+                fetchStats();
             }
 
             @Override
             public void onFailure(@NonNull Call<DataResponse<DataPrice>> call, @NonNull Throwable t) {
+                fetchStats();
+            }
+        });
+    }
+
+    public void fetchStats() {
+        clientInterface.getStats().enqueue(new Callback<DataResponse<DataStats>>() {
+            @Override
+            public void onResponse(@NonNull Call<DataResponse<DataStats>> call, @NonNull Response<DataResponse<DataStats>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null && !response.body().isError()) {
+                        String json = gson.toJson(response.body().getData());
+                        utilDb.putString(Constant.STATS, json);
+                    }
+                }
+                setState(Constant.FETCH_DATA, "DONE");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DataResponse<DataStats>> call, @NonNull Throwable t) {
                 setState(Constant.FETCH_DATA, "DONE");
             }
         });
@@ -188,6 +209,14 @@ public class BaseFragment extends Fragment {
     public DataPrice getPrice() {
         try {
             return gson.fromJson(utilDb.getString(Constant.PRICE), DataPrice.class);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public DataStats getStats() {
+        try {
+            return gson.fromJson(utilDb.getString(Constant.STATS), DataStats.class);
         } catch (Exception ignored) {
             return null;
         }

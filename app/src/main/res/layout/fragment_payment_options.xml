@@ -5,6 +5,8 @@
     android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.google.android.material.button.MaterialButton
+        android:padding="25dp"
+        android:drawableTop="@drawable/cash_smaller"
         android:id="@+id/btnCash"
         android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.google.android.material.button.MaterialButton
+        android:padding="25dp"
+        android:drawableTop="@drawable/qris_smaller"
         app:layout_constraintTop_toBottomOf="@id/btnCash"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,6 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.google.android.material.button.MaterialButton
+        android:padding="25dp"
+        android:drawableTop="@drawable/tapcash_smaller"
         app:layout_constraintTop_toBottomOf="@id/btnQris"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -55,7 +55,7 @@ public class MainFragment extends BaseFragment {
 
         setupNavigation();
         setupTrigger();
-        setupDb();
+        setupData();
         return binding.getRoot();
 
     }
@@ -89,23 +89,10 @@ public class MainFragment extends BaseFragment {
                     .load(inisialNama.toString())
                     .placeholder(R.drawable.ic_account_box)
                     .into(binding.user.profile);
-        } catch (Exception ignored) {}
-    }
 
-    void setupDb() {
-        setupData();
-        appDb.parked().getLive(false, UtilDate.getNow()).observe(
-                getViewLifecycleOwner(),
-                parkeds -> {
-                    int totalKendaraan = 0;
-                    int totalPaid = 0;
-                    for (Parked parked : parkeds) {
-                        totalKendaraan++;
-                        totalPaid += parked.getPrice();
-                    }
-                    binding.edtPendapatan.setText(String.valueOf(totalPaid));
-                    binding.edtKarcis.setText(String.valueOf(totalKendaraan));
-                });
+            binding.edtPendapatan.setText(getStats().getTotalTransaksi()!=null?getStats().getTotalTransaksi():"0");
+            binding.edtKarcis.setText(String.valueOf(getStats().getJumlahTransaksi()));
+        } catch (Exception ignored) {}
     }
 
     void setupNavigation() {
