@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Constant {
-//    public static final String BASE_URL = "https://e-parkir.batukota.go.id/android/e-parkir/v1/";
-    public static final String BASE_URL = "http://66.96.229.251:84/API/e-parkir/v1/";
+    public static final String BASE_URL = "https://e-parkir.batukota.go.id/android/e-parkir/v1/";
+//    public static final String BASE_URL = "http://66.96.229.251:84/API/e-parkir/v1/";
     public static final String BASE_IMAGE = "https://via.placeholder.com/100.png?text=";
 //    public static final String UUID = "0b000001-0000-0001-1010-000000";
     public static final String UUID = "00001101-0000-1000-8000-00805F9B34FB";
@@ -45,12 +45,12 @@ public class Constant {
     public static String KEY_DETAIL_TIKET = "com.mhandharbeni.e_parking.fragments.DETAIL_TIKET";
     public static String KEY_DETAIL_QR = "com.mhandharbeni.e_parking.fragments.DETAIL_QR";
 
-    public static final String FETCH_DATA = "FETCH_DATA";
+    public static final String FETCH_DATA = "com.mhandharbeni.e_parking.cores.BaseFragment.FETCH_DATA";
 
-    public static final String TOKEN = "TOKEN";
-    public static final String ME = "ME";
-    public static final String PRICE = "PRICE";
-    public static final String STATS = "STATS";
+    public static final String TOKEN = "com.mhandharbeni.e_parking.apis.TOKEN";
+    public static final String ME = "com.mhandharbeni.e_parking.apis.ME";
+    public static final String PRICE = "com.mhandharbeni.e_parking.apis.PRICE";
+    public static final String STATS = "com.mhandharbeni.e_parking.apis.STATS";
 
     public static final String CI_USERNAME = "USERNAME";
     public static final String CI_PASSWORD = "PASSWORD";

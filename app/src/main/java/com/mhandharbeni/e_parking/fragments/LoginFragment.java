@@ -41,37 +41,43 @@ public class LoginFragment extends BaseFragment {
 
         navController = NavHostFragment.findNavController(this);
 
+        return binding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         binding.btnLogin.setOnClickListener(v -> {
+            showLoading();
             clientInterface.login(
                     Objects.requireNonNull(binding.edtIdJukir.getEditText()).getText().toString(),
                     Objects.requireNonNull(binding.edtPassword.getEditText()).getText().toString()
             ).enqueue(new Callback<DataResponse<DataLogin>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataLogin>> call, @NonNull Response<DataResponse<DataLogin>> response) {
-                    Log.d(TAG, "onResponse: "+response.body().getData().toString());
                     if (response.isSuccessful()) {
-                        if (!response.body().isError()) {
-                            utilDb.putString(Constant.TOKEN, response.body().getData().getToken());
-                            navigate(R.id.action_login_to_main);
-                        } else {
-                            showError(v, response.body().getMessage());
+                        if (response.body() != null) {
+                            if (!response.body().isError()) {
+                                utilDb.putString(Constant.TOKEN, response.body().getData().getToken());
+                                navigate(R.id.action_login_to_main);
+                            } else {
+                                showError(binding.edtPassword, response.body().getMessage());
+                            }
                         }
+                    } else {
+                        showError(binding.edtPassword, "Something went wrong");
                     }
+                    doneLoading();
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<DataResponse<DataLogin>> call, @NonNull Throwable t) {
-                    t.printStackTrace();
+                    showError(binding.edtPassword, "Wrong username and password");
+                    doneLoading();
                 }
             });
 //            navigate(R.id.action_login_to_main)
         });
-        return binding.getRoot();
-
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

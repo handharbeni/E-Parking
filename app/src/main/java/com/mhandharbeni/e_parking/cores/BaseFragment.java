@@ -2,6 +2,7 @@ package com.mhandharbeni.e_parking.cores;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.navigation.NavController;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.datatransport.runtime.dagger.Component;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.apis.Client;
@@ -136,6 +138,16 @@ public class BaseFragment extends Fragment {
         balloon.showAlignBottom(view);
         balloon.setOnBalloonClickListener(view1 -> balloon.dismiss());
         balloon.setOnBalloonOverlayClickListener(balloon::dismiss);
+    }
+
+    public void showDialogOneButton(String title, String message, String button) {
+        new MaterialAlertDialogBuilder(requireActivity())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(button, (dialogInterface, i) -> {
+
+                })
+                .show();
     }
 
     public void fetchMe() {

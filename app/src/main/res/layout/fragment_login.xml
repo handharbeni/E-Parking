@@ -54,6 +54,14 @@
             android:hint="@string/id_jukir">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:nextFocusDown="@id/edtPassword"
+                android:inputType="text"
+                android:ellipsize="end"
+                android:scrollHorizontally="true"
+                android:imeOptions="actionNext"
+                android:lines="1"
+                android:maxLines="1"
+                android:maxEms="20"
                 android:minHeight="70dp"
                 android:textSize="20sp"
                 android:layout_width="match_parent"
@@ -76,6 +84,11 @@
             android:hint="@string/password">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:ellipsize="end"
+                android:scrollHorizontally="true"
+                android:lines="1"
+                android:maxEms="20"
+                android:imeOptions="actionDone"
                 android:minHeight="70dp"
                 android:inputType="textPassword"
                 android:textSize="20sp"
@@ -84,6 +97,7 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
+            android:imeOptions="actionGo"
             android:id="@+id/btnLogin"
             android:textSize="20sp"
             android:text="@string/sign_in"
