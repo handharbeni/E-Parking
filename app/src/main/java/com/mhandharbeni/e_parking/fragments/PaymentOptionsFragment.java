@@ -66,8 +66,8 @@ public class PaymentOptionsFragment extends BaseFragment {
             showLoading();
             DataMe me = getMe();
             // TODO CHANGE THE PRICE TO String.valueOf(parked.getPrice())
-//            String price = String.valueOf(parked.getPrice());
-            String price = "1";
+            String price = String.valueOf(parked.getPrice());
+//            String price = "1";
             clientInterface.getQr(price, parked.getBillNumber()).enqueue(new Callback<DataResponse<DataQr>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataQr>> call, @NonNull Response<DataResponse<DataQr>> response) {
