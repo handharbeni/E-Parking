@@ -2,6 +2,7 @@ package com.mhandharbeni.e_parking.fragments;
 
 import static android.content.Context.WINDOW_SERVICE;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -120,6 +121,9 @@ public class DetailPaymentQR extends BaseFragment {
                             if (dataStatus.getStatus() == 1) {
                                 parked.setPaid(true);
                                 appDb.parked().update(parked);
+
+                                binding.ivPaid.setVisibility(View.VISIBLE);
+
                                 binding.txtStatusPayment.setText(getResources().getString(R.string.paid));
                                 binding.btnCheckPayment.setEnabled(false);
 

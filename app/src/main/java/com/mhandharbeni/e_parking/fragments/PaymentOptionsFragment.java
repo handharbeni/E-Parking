@@ -128,7 +128,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             balloon = null;
         }
         balloon = new Balloon.Builder(requireContext())
-                .setLayout(R.layout.popup_error)
+                .setLayout(R.layout.popup_inprogress)
                 .setIsVisibleArrow(false)
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setHeight(BalloonSizeSpec.WRAP)

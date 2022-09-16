@@ -139,7 +139,9 @@
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_options_to_detailqr"
-            app:destination="@id/DetailQRPayment"/>
+            app:destination="@id/DetailQRPayment"
+            app:popUpTo="@id/PaymentOptionsFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/ListParkedFragment"

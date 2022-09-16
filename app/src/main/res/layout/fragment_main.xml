@@ -118,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.button.MaterialButton
-                    android:drawableTop="@drawable/enter_smaller"
+                    android:padding="15dp"
+                    android:drawableLeft="@drawable/enter_smaller"
                     android:id="@+id/btnCheckin"
                     android:minHeight="55dp"
                     android:textColor="@color/white"
@@ -126,7 +127,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.button.MaterialButton
-                    android:drawableTop="@drawable/exit_smaller"
+                    android:padding="15dp"
+                    android:drawableRight="@drawable/exit_smaller"
                     android:id="@+id/btnCheckout"
                     android:minHeight="55dp"
                     android:textColor="@color/white"
