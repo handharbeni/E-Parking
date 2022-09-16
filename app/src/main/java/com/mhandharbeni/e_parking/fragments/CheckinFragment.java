@@ -131,7 +131,6 @@ public class CheckinFragment extends BaseFragment {
 
     @SuppressLint("NonConstantResourceId")
     void setupGroupButton(View view) {
-        showLoading();
         String image = toBase64();
         if (image != null) {
 
@@ -169,7 +168,7 @@ public class CheckinFragment extends BaseFragment {
                 parked.setType(type);
                 parked.setSync(false);
                 parked.setPrice(price);
-
+                showLoading();
                 clientInterface.parkirMasuk(
                         parked.getPlatNumber(),
                         parked.getTicketNumber(),
