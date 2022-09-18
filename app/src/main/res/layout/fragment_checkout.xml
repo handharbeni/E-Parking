@@ -58,7 +58,7 @@
             android:maxEms="15"
             app:counterMaxLength="15"
             app:counterEnabled="true"
-            android:hint="@string/plat_nomor">
+            android:hint="@string/bill_number">
             <com.google.android.material.textfield.TextInputEditText
                 android:maxEms="15"
                 android:lines="1"

@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
                 smallerDimension = smallerDimension * 3 / 4;
 
                 String inputValue = "";
-                inputValue += parked.getPlatNumber();
+                inputValue += parked.getBillNumber();
                 inputValue += ",_,";
                 inputValue += parked.getDate();
 

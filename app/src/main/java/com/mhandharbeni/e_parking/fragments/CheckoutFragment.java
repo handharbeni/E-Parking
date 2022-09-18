@@ -72,11 +72,11 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
         vibrate();
         try {
             String[] aResult = result.split(",_,");
-            String platNo = aResult[0];
+            String billNumber = aResult[0];
             String date = aResult[1];
             Objects.requireNonNull(binding.edtPlatNomor.getEditText()).setText(aResult[0]);
 
-            clientInterface.getKendaraanByPlatNumber(platNo).enqueue(new Callback<DataResponse<DataKendaraan>>() {
+            clientInterface.getKendaraan(billNumber).enqueue(new Callback<DataResponse<DataKendaraan>>() {
                 @Override
                 public void onResponse(@NonNull Call<DataResponse<DataKendaraan>> call, @NonNull Response<DataResponse<DataKendaraan>> response) {
                     doneLoading();
