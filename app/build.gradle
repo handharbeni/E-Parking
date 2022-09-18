@@ -36,6 +36,7 @@ android {
             storePassword 'E_PARK12345678'
         }
     }
+    namespace 'com.mhandharbeni.e_parking'
 }
 
 dependencies {
