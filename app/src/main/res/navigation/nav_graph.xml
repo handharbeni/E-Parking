@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_main_to_listparked"
             app:destination="@id/ListParkedFragment"/>
+        <action
+            android:id="@+id/action_MainFragment_to_fragmentLostTicket"
+            app:destination="@id/fragmentLostTicket" />
     </fragment>
     <fragment
         android:id="@+id/BluetoothFragment"
@@ -163,5 +166,17 @@
         android:label="QR Screen"
         tools:layout="@layout/fragment_detail_payment_qr">
 
+    </fragment>
+    <fragment
+        tools:layout="@layout/layout_form_lost_ticket"
+        android:id="@+id/fragmentLostTicket"
+        android:name="com.mhandharbeni.e_parking.fragments.FragmentLostTicket"
+        android:label="FragmentLostTicket">
+
+        <action
+            android:id="@+id/action_fragmentLostTicket_to_DetailPaymentFragment"
+            app:destination="@id/DetailPaymentFragment"
+            app:popUpTo="@id/fragmentLostTicket"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

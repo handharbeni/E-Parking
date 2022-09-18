@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/svPlatNumber"
+                app:iconifiedByDefault="false"
+                app:queryHint="Cari Plat Nomor"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:layout_margin="15dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardCornerRadius="18dp"
+                android:id="@+id/cvDataKendaraan"
+                app:layout_constraintTop_toBottomOf="@id/svPlatNumber"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_margin="15dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:text="Data Kendaraan"
+                        android:id="@+id/txtFotoKendaraan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/txtPlatNomor"
+                        android:text="Plat Nomor: xxx"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/txtCheckin"
+                        android:text="Waktu Checkin: xxx"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:visibility="gone"
+                android:gravity="center"
+                android:id="@+id/llNotFound"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/svPlatNumber"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ivNotFound"
+                    android:src="@drawable/ic_close"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"/>
+                <TextView
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:text="Kendaraan tidak ditemukan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <include
+                android:id="@+id/cameraView"
+                app:layout_constraintTop_toBottomOf="@id/cvDataKendaraan"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/layout_form_lost_ticket"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnNext"
+        android:src="@drawable/ic_next"
+        android:layout_margin="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/todo" />
+</androidx.constraintlayout.widget.ConstraintLayout>

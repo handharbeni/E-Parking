@@ -102,7 +102,7 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
                                     parked.setDataQr(dataKendaraan.getDataQr());
                                     parked.setPaid(dataKendaraan.getPaid()==0);
                                     parked.setSync(dataKendaraan.getIsSync()==0);
-
+                                    args.putBoolean(Constant.KEY_DETAIL_PURPOSE, false);
                                     args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                                     navigate(R.id.action_checkout_to_detailpayment, args);
                                 } else {
@@ -161,12 +161,14 @@ public class CheckoutFragment extends BaseFragment implements QRCodeView.Delegat
         binding.btnNext.setOnClickListener(v -> {
             if (parked != null) {
                 Bundle args = new Bundle();
+                args.putBoolean(Constant.KEY_DETAIL_PURPOSE, false);
                 args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                 navigate(R.id.action_checkout_to_detailpayment, args);
             } else {
                 parked = appDb.parked().getParked(Objects.requireNonNull(binding.edtPlatNomor.getEditText()).getText().toString());
                 if (parked != null) {
                     Bundle args = new Bundle();
+                    args.putBoolean(Constant.KEY_DETAIL_PURPOSE, false);
                     args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
                     navigate(R.id.action_checkout_to_detailpayment, args);
                 } else {

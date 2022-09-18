@@ -22,6 +22,7 @@ import com.mhandharbeni.e_parking.utils.UtilImage;
 public class DetailPaymentFragment extends BaseFragment {
     FragmentDetailBayarBinding binding;
     Parked parked;
+    boolean isLost = false;
 
     @Nullable
     @Override
@@ -38,14 +39,20 @@ public class DetailPaymentFragment extends BaseFragment {
     void setupBundle() {
         Bundle args = getArguments();
         if (args != null) {
+            isLost = args.getBoolean(Constant.KEY_DETAIL_PURPOSE, false);
             parked = (Parked) args.getSerializable(Constant.KEY_DETAIL_TIKET);
             bindData();
-
             setupTrigger();
         }
     }
 
     void bindData() {
+        if (isLost) {
+            binding.btnPrintTiket.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnPrintTiket.setVisibility(View.GONE);
+        }
+
         String type = "MOTOR";
         switch (parked.getType()) {
             case 0 :

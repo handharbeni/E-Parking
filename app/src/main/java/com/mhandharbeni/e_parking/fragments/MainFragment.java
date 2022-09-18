@@ -125,7 +125,7 @@ public class MainFragment extends BaseFragment {
         binding.btnCheckin.setOnClickListener(
                 v -> {
                     if (!UtilPermission.checkPermission(requireContext())) {
-                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                        setState(Constant.REQUEST_PERMISSION, MainFragment.class.getSimpleName());
                     } else {
                         if (!MainActivity.bluetoothConnected) {
                             showError(binding.header.menu, "Please Connect to Bluetooh printer!");
@@ -137,7 +137,7 @@ public class MainFragment extends BaseFragment {
         binding.btnCheckout.setOnClickListener(
                 v -> {
                     if (!UtilPermission.checkPermission(requireContext())) {
-                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                        setState(Constant.REQUEST_PERMISSION, MainFragment.class.getSimpleName());
                     } else {
                         navigate(R.id.action_main_to_checkout);
                     }
@@ -146,9 +146,22 @@ public class MainFragment extends BaseFragment {
         binding.btnDetail.setOnClickListener(
                 v -> {
                     if (!UtilPermission.checkPermission(requireContext())) {
-                        setState(Constant.REQUEST_PERMISSION, CheckinFragment.class.getSimpleName());
+                        setState(Constant.REQUEST_PERMISSION, MainFragment.class.getSimpleName());
                     } else {
                         navigate(R.id.action_main_to_listparked);
+                    }
+                }
+        );
+        binding.btnLostTicket.setOnClickListener(
+                v-> {
+                    if (!UtilPermission.checkPermission(requireContext())) {
+                        setState(Constant.REQUEST_PERMISSION, MainFragment.class.getSimpleName());
+                    } else {
+                        if (!MainActivity.bluetoothConnected) {
+                            showError(binding.header.menu, "Please Connect to Bluetooh printer!");
+                        } else {
+                            navigate(R.id.action_MainFragment_to_fragmentLostTicket);
+                        }
                     }
                 }
         );

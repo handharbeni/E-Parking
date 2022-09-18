@@ -60,6 +60,7 @@ public class ListParkedFragment extends BaseFragment implements ParkedAdapter.Pa
     @Override
     public void onItemParkedClick(Parked parked) {
         Bundle args = new Bundle();
+        args.putBoolean(Constant.KEY_DETAIL_PURPOSE, false);
         args.putSerializable(Constant.KEY_DETAIL_TIKET, parked);
         navigate(R.id.action_listparked_to_detailpayment, args);
     }

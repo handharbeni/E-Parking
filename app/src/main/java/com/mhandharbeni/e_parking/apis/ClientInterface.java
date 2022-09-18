@@ -3,6 +3,7 @@ package com.mhandharbeni.e_parking.apis;
 import com.mhandharbeni.e_parking.apis.responses.DataResponse;
 import com.mhandharbeni.e_parking.apis.responses.data.DataKendaraan;
 import com.mhandharbeni.e_parking.apis.responses.data.DataLogin;
+import com.mhandharbeni.e_parking.apis.responses.data.DataLostTicket;
 import com.mhandharbeni.e_parking.apis.responses.data.DataMe;
 import com.mhandharbeni.e_parking.apis.responses.data.DataParkirKeluar;
 import com.mhandharbeni.e_parking.apis.responses.data.DataParkirMasuk;
@@ -81,5 +82,13 @@ public interface ClientInterface {
 
     @GET("getStats.php")
     Call<DataResponse<DataStats>> getStats();
+
+    @POST("sentLostTicket.php")
+    Call<DataResponse<DataLostTicket>> sendLostTicket(
+            @Field(Constant.CI_PLATNUMBER) String platNumber,
+            @Field(Constant.CI_BILLNUMBER) String billNumber,
+            @Field(Constant.CI_FOTOKTP) String fotoKtp,
+            @Field(Constant.CI_FOTOKENDARAAN) String fotoKendaraan
+    );
 
 }

@@ -136,6 +136,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <com.google.android.material.button.MaterialButton
+                    android:padding="15dp"
+                    android:drawableLeft="@drawable/loss_smaller"
+                    android:id="@+id/btnLostTicket"
+                    android:minHeight="55dp"
+                    android:textColor="@color/white"
+                    android:text="@string/karcis_hilang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <com.google.android.material.button.MaterialButton
                     android:visibility="gone"
                     android:id="@+id/btnDetail"
                     android:minHeight="55dp"

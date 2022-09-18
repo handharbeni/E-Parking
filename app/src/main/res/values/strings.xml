@@ -71,4 +71,8 @@
     <string name="unpaid">UNPAID</string>
     <string name="paid">PAID</string>
     <string name="logo_qris">Logo Qris</string>
+    <string name="karcis_hilang">Karcis Hilang</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="foto_ktp">Foto KTP</string>
 </resources>
