@@ -83,6 +83,7 @@ public interface ClientInterface {
     @GET("getStats.php")
     Call<DataResponse<DataStats>> getStats();
 
+    @FormUrlEncoded
     @POST("sentLostTicket.php")
     Call<DataResponse<DataLostTicket>> sendLostTicket(
             @Field(Constant.CI_PLATNUMBER) String platNumber,
