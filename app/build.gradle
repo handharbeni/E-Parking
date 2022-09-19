@@ -8,9 +8,10 @@ android {
     defaultConfig {
         applicationId "com.mhandharbeni.e_parking"
         minSdk 21
+        //noinspection OldTargetApi
         targetSdk 32
-        versionCode 3
-        versionName "1.1.1"
+        versionCode 4
+        versionName "1.2.1"
         archivesBaseName = "EPark-version_${versionName}-build_${versionCode}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
