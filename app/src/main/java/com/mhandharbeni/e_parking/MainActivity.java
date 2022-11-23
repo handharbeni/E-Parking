@@ -39,6 +39,7 @@ import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
+import com.mhandharbeni.e_parking.cores.BaseActivity;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.database.models.Parked;
 import com.mhandharbeni.e_parking.databinding.ActivityMainBinding;
@@ -65,7 +66,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import io.reactivex.rxjava3.core.Observable;
 
-public class MainActivity extends AppCompatActivity implements BluetoothService.OnBluetoothEventCallback, BluetoothService.OnBluetoothScanCallback {
+public class MainActivity extends BaseActivity implements BluetoothService.OnBluetoothEventCallback, BluetoothService.OnBluetoothScanCallback {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -333,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothService.
 
     @SuppressLint("StaticFieldLeak")
     private static class PrintAsyncTask extends AsyncTask<Parked, Boolean, Boolean> {
-        private Context context;
-        private ProgressDialog dialog;
+        private final Context context;
+        private final ProgressDialog dialog;
 
         public PrintAsyncTask(Activity activity, Context context) {
             this.context = context;

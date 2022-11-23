@@ -3,6 +3,7 @@ package com.mhandharbeni.e_parking.cores;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.navigation.NavController;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.datatransport.runtime.dagger.Component;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.mhandharbeni.e_parking.R;
@@ -27,8 +30,10 @@ import com.mhandharbeni.e_parking.apis.responses.data.DataPrice;
 import com.mhandharbeni.e_parking.apis.responses.data.DataStats;
 import com.mhandharbeni.e_parking.database.AppDb;
 import com.mhandharbeni.e_parking.fragments.LoginFragment;
+import com.mhandharbeni.e_parking.services.TrackingServices;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilDb;
+import com.mhandharbeni.e_parking.utils.UtilFirebase;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowPositionRules;
 import com.skydoves.balloon.Balloon;
@@ -64,6 +69,30 @@ public class BaseFragment extends Fragment {
         resources = requireContext().getResources();
         glideManager = Glide.with(this);
         gson = new Gson();
+
+
+        Intent intent = new Intent(requireActivity(), TrackingServices.class);
+        requireActivity().startService(intent);
+
+//        UtilFirebase.setOnline(getMe(), task -> {});
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        UtilFirebase.setOnline(getMe(), task -> {});
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        UtilFirebase.setOnline(getMe(), task -> {});
+    }
+
+    @Override
+    public void onDestroy() {
+        UtilFirebase.setOffline(getMe(), task -> {});
+        super.onDestroy();
     }
 
     public <T> void observe(String key, Observer<T> observer) {

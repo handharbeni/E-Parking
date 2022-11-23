@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "625222178598",
+    "project_id": "demoproject-6bf7f",
+    "storage_bucket": "demoproject-6bf7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625222178598:android:1513a219b71af82c1553e7",
+        "android_client_info": {
+          "package_name": "com.mhandharbeni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625222178598-rg3e22h6grlrh1iqao087nsl271cg7op.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzGYIqCmhnEX13eeOMBpj3x_nc9SVRpSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625222178598-rg3e22h6grlrh1iqao087nsl271cg7op.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625222178598:android:92a1c5730d152c1a1553e7",
+        "android_client_info": {
+          "package_name": "com.mhandharbeni.e_parking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625222178598-m28tf81mdkdm4sfa80s7ppq23ncs988h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mhandharbeni.e_parking",
+            "certificate_hash": "d3195c7944ad4d59f2358ae611c932bc6c5d120e"
+          }
+        },
+        {
+          "client_id": "625222178598-rg3e22h6grlrh1iqao087nsl271cg7op.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzGYIqCmhnEX13eeOMBpj3x_nc9SVRpSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625222178598-rg3e22h6grlrh1iqao087nsl271cg7op.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

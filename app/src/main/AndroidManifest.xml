@@ -45,6 +45,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".services.TrackingServices"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false"/>
     </application>
 
 </manifest>
