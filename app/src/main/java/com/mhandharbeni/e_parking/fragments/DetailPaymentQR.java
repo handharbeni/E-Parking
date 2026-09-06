@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.zxing.qrcode.encoder.QRCode;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.apis.responses.DataResponse;
 import com.mhandharbeni.e_parking.apis.responses.data.DataQr;
@@ -30,8 +31,7 @@ import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.skydoves.balloon.BalloonSizeSpec;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,11 +84,12 @@ public class DetailPaymentQR extends BaseFragment {
 
         int smallerDimension = Math.min(width, height);
         smallerDimension = smallerDimension * 3 / 4;
-        QRGEncoder qrgEncoder = new QRGEncoder(dataQr.getQrValue(), null, QRGContents.Type.TEXT, smallerDimension);
-        qrgEncoder.setColorBlack(Color.BLACK);
-        qrgEncoder.setColorWhite(Color.WHITE);
+//        QRGEncoder qrgEncoder = new QRGEncoder(dataQr.getQrValue(), null, QRGContents.Type.TEXT, smallerDimension);
+//        qrgEncoder.setColorBlack(Color.BLACK);
+//        qrgEncoder.setColorWhite(Color.WHITE);
+
         try {
-            Bitmap bitmap = qrgEncoder.getBitmap();
+            Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(dataQr.getQrValue(), smallerDimension);
             glideManager.load(bitmap).into(binding.imgQR);
 
             parked.setDate(System.currentTimeMillis());

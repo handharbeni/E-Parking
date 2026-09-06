@@ -62,8 +62,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
+//import androidmads.library.qrgenearator.QRGContents;
+//import androidmads.library.qrgenearator.QRGEncoder;
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 import io.reactivex.rxjava3.core.Observable;
 
 public class MainActivity extends BaseActivity implements BluetoothService.OnBluetoothEventCallback, BluetoothService.OnBluetoothScanCallback {
@@ -376,11 +377,11 @@ public class MainActivity extends BaseActivity implements BluetoothService.OnBlu
                 inputValue += ",_,";
                 inputValue += parked.getDate();
 
-                QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
-                qrgEncoder.setColorBlack(Color.BLACK);
-                qrgEncoder.setColorWhite(Color.WHITE);
+//                QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
+//                qrgEncoder.setColorBlack(Color.BLACK);
+//                qrgEncoder.setColorWhite(Color.WHITE);
 
-                Bitmap bitmap = qrgEncoder.getBitmap();
+                Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(inputValue, smallerDimension);
 
                 String vehicle = "Motor";
                 switch (parked.getType()) {

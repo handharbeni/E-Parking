@@ -18,6 +18,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.encoder.QRCode;
 import com.mhandharbeni.e_parking.R;
 import com.mhandharbeni.e_parking.cores.BaseFragment;
 import com.mhandharbeni.e_parking.database.models.Parked;
@@ -25,8 +27,9 @@ import com.mhandharbeni.e_parking.databinding.FragmentDetailTiketBinding;
 import com.mhandharbeni.e_parking.utils.Constant;
 import com.mhandharbeni.e_parking.utils.UtilDate;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
+//import androidmads.library.qrgenearator.QRGContents;
+//import androidmads.library.qrgenearator.QRGEncoder;
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 
 public class DetailTiketFragment extends BaseFragment {
     private final String TAG = DetailTiketFragment.class.getSimpleName();
@@ -89,11 +92,12 @@ public class DetailTiketFragment extends BaseFragment {
             inputValue += ",_,";
             inputValue += parked.getDate();
 
-            QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
-            qrgEncoder.setColorBlack(Color.BLACK);
-            qrgEncoder.setColorWhite(Color.WHITE);
+
+//            QRCodeEncoder qrgEncoder = new QRCodeEncoder(inputValue, smallerDimension);
+//            qrgEncoder.setColorBlack(Color.BLACK);
+//            qrgEncoder.setColorWhite(Color.WHITE);
             try {
-                Bitmap bitmap = qrgEncoder.getBitmap();
+                Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(inputValue, smallerDimension);
                 glideManager.load(bitmap).into(binding.imgQR);
             } catch (Exception ignored) {}
 
